@@ -1,0 +1,6 @@
+*.txt
+Makefile
+FreeMarket
+CMakeFiles/
+.idea/
+*.cmake
