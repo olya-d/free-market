@@ -4,3 +4,4 @@ FreeMarket
 CMakeFiles/
 .idea/
 *.cmake
+*.pdf
