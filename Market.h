@@ -17,7 +17,6 @@
 #include "Consumer.h"
 
 
-
 class Market {
     std::vector<Producer*> producers;
     std::vector<Consumer*> consumers;
@@ -34,8 +33,7 @@ public:
     float averagePrice();
     int supply();
     int demand();
-    Producer* cheapestProducer();
-    
+
     void simulate(int times);
 };
 

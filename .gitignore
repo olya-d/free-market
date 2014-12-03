@@ -5,3 +5,4 @@ CMakeFiles/
 .idea/
 *.cmake
 *.pdf
+config.json

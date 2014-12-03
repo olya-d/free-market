@@ -5,8 +5,6 @@
 //  Created by Olga on 02.12.14.
 //  Copyright (c) 2014 My Organization Name. All rights reserved.
 //
-#include <math.h>
-
 
 #include "Producer.h"
 #include "Constants.h"
@@ -26,12 +24,12 @@ void Producer::generateGoods() {
 
 void Producer::produce() {
     if (supply > 0) {
-        if (price >= MarketConstants::Cost) {
+        if (price*MarketConstants::PriceDecrement >= MarketConstants::Cost) {
             price *= MarketConstants::PriceDecrement;
         }
-    } else {
-        price *= MarketConstants::PriceIncrement;
-        generateGoods();
+    } else { // Supply was bought!
+        price *= MarketConstants::PriceIncrement; // Increase price.
+        generateGoods(); // Make more product.
     }
 }
 

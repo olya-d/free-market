@@ -18,9 +18,9 @@ Market::Market() {
     producers = std::vector<Producer*>();
     consumers = std::vector<Consumer*>();
     
-    demandData.open("demand.txt");
-    priceData.open("price.txt");
-    supplyData.open("supply.txt");
+    demandData.open(MarketConstants::DemandFile);
+    priceData.open(MarketConstants::PriceFile);
+    supplyData.open(MarketConstants::SupplyFile);
     
     srand(time(nullptr));
     
@@ -70,6 +70,7 @@ void Market::writeData() {
 void Market::simulate(int times) {
     for (int i = 0; i < times; i++) {
         int generatedDemand = int(roundf((sinf(i) + 2)*20));
+
         for (Consumer* consumer : consumers) {
             consumer->setDemand(generatedDemand);
         }
@@ -87,8 +88,7 @@ void Market::simulate(int times) {
             }
         }
     }
-    writeData();
-    
+
     demandData.close();
     priceData.close();
     supplyData.close();

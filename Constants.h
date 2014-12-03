@@ -2,26 +2,33 @@
 //  Constants.h
 //  FreeMarket
 //
-//  Created by Olga on 02.12.14.
+//  Created by Olga on 03.12.14.
 //  Copyright (c) 2014 My Organization Name. All rights reserved.
 //
 
-#ifndef FreeMarket_Constants_h
-#define FreeMarket_Constants_h
+#ifndef __FreeMarket__Constants__
+#define __FreeMarket__Constants__
+
+#include <iostream>
 
 namespace MarketConstants {
-    const int SimulationDuration = 150;
-    const int NumOfProducers = 10;
-    const int NumOfConsumers = 10;
-    
-    const int MaxStartingSupply = 20;
-    const int SupplyIncrement = 80;
-    
-    const int Cost = 5;
-    const int MaxAcceptablePrice = Cost*10;
-    const int MaxStartingProfit = 5;
-    const float PriceIncrement = 1.1f;
-    const float PriceDecrement = 0.9f;
+    extern int SimulationDuration;
+    extern int NumOfProducers;
+    extern int NumOfConsumers;
+
+    extern int MaxStartingSupply;
+    extern int SupplyIncrement;
+
+    extern int Cost;
+    extern int MaxAcceptablePrice;
+    extern int MaxStartingProfit;
+    extern float PriceIncrement;
+    extern float PriceDecrement;
+
+    extern std::string DemandFile;
+    extern std::string SupplyFile;
+    extern std::string PriceFile;
 }
 
-#endif
+
+#endif /* defined(__FreeMarket__Constants__) */

@@ -6,10 +6,7 @@
 //  Copyright (c) 2014 My Organization Name. All rights reserved.
 //
 #include "Consumer.h"
-#include "Producer.h"
-
 #include "Constants.h"
-
 
 Consumer::Consumer() {
     demand = 0;
