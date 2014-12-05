@@ -10,22 +10,26 @@
 #define __FreeMarket__Consumer__
 
 #include <stdio.h>
-#include <vector>
+#include <map>
+#include <iostream>
 
 #include "Producer.h"
+#include "IMarket.h"
+
 
 class Consumer {
 private:
+    IMarket* market;
     int demand;
-    
+
 public:
-    Consumer();
+    Consumer(IMarket* market);
     
     int getDemand();
     
     void setDemand(int d);
     
-    void buy(std::vector<Producer *> producers);
+    void buy(const std::string& good);
 };
 
 #endif /* defined(__FreeMarket__Consumer__) */

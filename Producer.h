@@ -10,24 +10,34 @@
 #define __FreeMarket__Producer__
 
 #include <stdio.h>
+#include <iostream>
+#include <vector>
+#include <map>
+#include "IMarket.h"
+#include "Constants.h"
+
 
 class Producer {
 private:
-    int supply;
-    float price;
-    
+    std::map<std::string, int> supplies;
+    std::map<std::string, float> prices;
+    IMarket* market;
+
     void generateGoods();
+    void changePricing();
     
 public:
-    Producer();
+    Producer(IMarket* market);
     
-    int getSupply();
-    float getPrice();
+    int getSupply(const std::string& good);
+    int getTotalSupply();
+    float getPrice(const std::string& good);
     
-    void setSupply(int s);
-    void setPrice(float p);
+    void setSupply(const std::string& good, int s);
+    void setPrice(const std::string& good, float p);
     
     void produce();
 };
+
 
 #endif /* defined(__FreeMarket__Producer__) */

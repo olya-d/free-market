@@ -15,11 +15,14 @@
 
 #include "Producer.h"
 #include "Consumer.h"
+#include "IMarket.h"
 
 
-class Market {
+class Market : IMarket {
     std::vector<Producer*> producers;
     std::vector<Consumer*> consumers;
+    
+    std::pair<std::string, float> mostExpensiveGood;
     
     std::ofstream demandData;
     std::ofstream priceData;
@@ -27,14 +30,19 @@ class Market {
     
     void writeData();
     
+    
 public:
     Market();
-    
-    float averagePrice();
-    int supply();
-    int demand();
+    int supply(const std::string& good);
+    int totalDemand();
+    int totalSupply();
+    float averagePrice(const std::string& good);
+
+    Producer* cheapestProducer(const std::string& good, bool ignoreZeroSupply);
+    std::pair<std::string, float> maxAveragePrice();
 
     void simulate(int times);
+    std::string cheapestGood();
 };
 
 #endif /* defined(__FreeMarket__Market__) */

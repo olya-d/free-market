@@ -10,6 +10,9 @@
 #define __FreeMarket__Constants__
 
 #include <iostream>
+#include <map>
+#include <vector>
+
 
 namespace MarketConstants {
     extern int SimulationDuration;
@@ -19,9 +22,10 @@ namespace MarketConstants {
     extern int MaxStartingSupply;
     extern int SupplyIncrement;
 
-    extern int Cost;
-    extern int MaxAcceptablePrice;
-    extern int MaxStartingProfit;
+    extern std::vector<std::string> Goods;
+    extern std::map<std::string, int> Costs;
+    extern std::map<std::string, int> MaxAcceptablePrices;
+    extern std::map<std::string, int> MaxStartingProfits;
     extern float PriceIncrement;
     extern float PriceDecrement;
 

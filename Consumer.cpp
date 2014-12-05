@@ -8,39 +8,33 @@
 #include "Consumer.h"
 #include "Constants.h"
 
-Consumer::Consumer() {
+Consumer::Consumer(IMarket* market) {
     demand = 0;
+    this->market = market;
 }
 
-void Consumer::buy(std::vector<Producer*> producers) {
-    int totalSupply =0;
-    std::for_each(producers.begin(), producers.end(), [&](Producer* p) {
-        totalSupply += p->getSupply();
-    });
-    
+void Consumer::buy(const std::string& good) {
+    int totalSupply = market->totalSupply();
     
     while (demand > 0 && totalSupply > 0) {
-        Producer* cheapestProducer = *std::min_element(producers.begin(), producers.end(), [](Producer* p1, Producer* p2) -> bool {
-            if (p1->getSupply() == 0) {
-                return false;
-            }
-            if (p2-> getSupply() == 0) {
-                return true;
-            }
-            return p1->getPrice() < p2->getPrice();
-        });
-        if (cheapestProducer) {
-            if (cheapestProducer->getPrice() > MarketConstants::MaxAcceptablePrice) {
+        std::string good = market->cheapestGood();
+        int goodSupply = market->supply(good);
+        while (demand > 0 & goodSupply > 0) {
+            Producer* cheapestProducer = market->cheapestProducer(good, true);
+            
+            if (cheapestProducer->getPrice(good) > MarketConstants::MaxAcceptablePrices[good]) {
                 demand /= 2;
             }
-            float cheapestSupply = cheapestProducer->getSupply();
+            int cheapestSupply = cheapestProducer->getSupply(good);
             if (demand > cheapestSupply) {
                 demand -= cheapestSupply;
                 totalSupply -= cheapestSupply;
-                cheapestProducer->setSupply(0);
+                goodSupply -= cheapestSupply;
+                cheapestProducer->setSupply(good, 0);
             } else {
                 totalSupply -= demand;
-                cheapestProducer->setSupply(cheapestSupply - demand);
+                goodSupply -= demand;
+                cheapestProducer->setSupply(good, cheapestSupply - demand);
                 demand = 0;
             }
         }
