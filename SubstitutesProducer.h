@@ -17,7 +17,7 @@
 #include "Constants.h"
 
 
-class Producer {
+class SubstitutesProducer {
 private:
     std::map<std::string, int> supplies;
     std::map<std::string, float> prices;
@@ -27,7 +27,7 @@ private:
     void changePricing();
     
 public:
-    Producer(IMarket* market);
+    SubstitutesProducer(IMarket* market);
     
     int getSupply(const std::string& good);
     int getTotalSupply();

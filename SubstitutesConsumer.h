@@ -13,17 +13,17 @@
 #include <map>
 #include <iostream>
 
-#include "Producer.h"
+#include "SubstitutesProducer.h"
 #include "IMarket.h"
 
 
-class Consumer {
+class SubstitutesConsumer {
 private:
     IMarket* market;
     int demand;
 
 public:
-    Consumer(IMarket* market);
+    SubstitutesConsumer(IMarket* market);
     
     int getDemand();
     

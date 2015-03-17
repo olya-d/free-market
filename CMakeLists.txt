@@ -7,13 +7,13 @@ include_directories(/usr/local/include/jsoncpp)
 
 set(SOURCE_FILES
     Constants.h
-    Consumer.cpp
-    Consumer.h
+    SubstitutesConsumer.cpp
+    SubstitutesConsumer.h
     main.cpp
-    Market.cpp
-    Market.h
-    Producer.cpp
-    Producer.h)
+    SubstitutesMarket.cpp
+    SubstitutesMarket.h
+    SubstitutesProducer.cpp
+    SubstitutesProducer.h)
 
 
 add_executable(FreeMarket ${SOURCE_FILES})

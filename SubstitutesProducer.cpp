@@ -7,10 +7,10 @@
 //
 #include <iostream>
 
-#include "Producer.h"
+#include "SubstitutesProducer.h"
 
 
-Producer::Producer(IMarket* market) {
+SubstitutesProducer::SubstitutesProducer(IMarket* market) {
     this->market = market;
     for (auto good : MarketConstants::Goods) {
         supplies[good] = 0;
@@ -18,7 +18,7 @@ Producer::Producer(IMarket* market) {
     }
 }
 
-void Producer::changePricing() {
+void SubstitutesProducer::changePricing() {
     for (const std::string good : MarketConstants::Goods) {
         if (supplies[good] > 0) {
             if (prices[good] > MarketConstants::Costs[good]) {
@@ -31,7 +31,7 @@ void Producer::changePricing() {
 }
 
 
-void Producer::generateGoods() {
+void SubstitutesProducer::generateGoods() {
     std::pair<std::string, float> max = market->maxAveragePrice();
     if (prices[max.first] > MarketConstants::Costs[max.first]) {
         supplies[max.first] += MarketConstants::SupplyIncrement;
@@ -39,21 +39,21 @@ void Producer::generateGoods() {
 }
 
 
-void Producer::produce() {
+void SubstitutesProducer::produce() {
     changePricing();
     generateGoods();
 }
 
 
-float Producer::getPrice(const std::string& good) {
+float SubstitutesProducer::getPrice(const std::string& good) {
     return prices[good];
 }
 
-int Producer::getSupply(const std::string& good) {
+int SubstitutesProducer::getSupply(const std::string& good) {
     return supplies[good];
 }
 
-int Producer::getTotalSupply() {
+int SubstitutesProducer::getTotalSupply() {
     int sum = 0;
     for (std::pair<std::string, int> supply : supplies) {
         sum += supply.second;
@@ -61,10 +61,10 @@ int Producer::getTotalSupply() {
     return sum;
 }
 
-void Producer::setSupply(const std::string& good, int s) {
+void SubstitutesProducer::setSupply(const std::string& good, int s) {
     supplies[good] = s;
 }
 
-void Producer::setPrice(const std::string& good, float p) {
+void SubstitutesProducer::setPrice(const std::string& good, float p) {
     prices[good] = p;
 }

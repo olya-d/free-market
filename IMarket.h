@@ -4,9 +4,10 @@
 #include <stdio.h>
 #include <iostream>
 #include <map>
+#include "SubstitutesProducer.h"
 
 
-class Producer;
+class SubstitutesProducer;
 
 
 class IMarket {
@@ -16,7 +17,7 @@ public:
     virtual int totalDemand() = 0;
     virtual int totalSupply() = 0;
     virtual void simulate(int times) = 0;
-    virtual Producer* cheapestProducer(const std::string& good, bool ignoreZeroSupply) = 0;
+    virtual SubstitutesProducer* cheapestProducer(const std::string& good, bool ignoreZeroSupply) = 0;
     virtual std::string cheapestGood() = 0;
 };
 

@@ -13,14 +13,14 @@
 #include <vector>
 #include <fstream>
 
-#include "Producer.h"
-#include "Consumer.h"
+#include "SubstitutesProducer.h"
+#include "SubstitutesConsumer.h"
 #include "IMarket.h"
 
 
-class Market : IMarket {
-    std::vector<Producer*> producers;
-    std::vector<Consumer*> consumers;
+class SubstitutesMarket : IMarket {
+    std::vector<SubstitutesProducer*> producers;
+    std::vector<SubstitutesConsumer*> consumers;
     
     std::pair<std::string, float> mostExpensiveGood;
     
@@ -32,13 +32,13 @@ class Market : IMarket {
     
     
 public:
-    Market();
+    SubstitutesMarket();
     int supply(const std::string& good);
     int totalDemand();
     int totalSupply();
     float averagePrice(const std::string& good);
 
-    Producer* cheapestProducer(const std::string& good, bool ignoreZeroSupply);
+    SubstitutesProducer* cheapestProducer(const std::string& good, bool ignoreZeroSupply);
     std::pair<std::string, float> maxAveragePrice();
 
     void simulate(int times);

@@ -5,22 +5,22 @@
 //  Created by Olga on 02.12.14.
 //  Copyright (c) 2014 My Organization Name. All rights reserved.
 //
-#include "Consumer.h"
+#include "SubstitutesConsumer.h"
 #include "Constants.h"
 
-Consumer::Consumer(IMarket* market) {
+SubstitutesConsumer::SubstitutesConsumer(IMarket* market) {
     demand = 0;
     this->market = market;
 }
 
-void Consumer::buy(const std::string& good) {
+void SubstitutesConsumer::buy(const std::string& good) {
     int totalSupply = market->totalSupply();
     
     while (demand > 0 && totalSupply > 0) {
         std::string good = market->cheapestGood();
         int goodSupply = market->supply(good);
         while (demand > 0 & goodSupply > 0) {
-            Producer* cheapestProducer = market->cheapestProducer(good, true);
+            SubstitutesProducer* cheapestProducer = market->cheapestProducer(good, true);
             
             if (cheapestProducer->getPrice(good) > MarketConstants::MaxAcceptablePrices[good]) {
                 demand /= 2;
@@ -41,10 +41,10 @@ void Consumer::buy(const std::string& good) {
     }
 }
 
-int Consumer::getDemand() {
+int SubstitutesConsumer::getDemand() {
     return demand;
 }
 
-void Consumer::setDemand(int d) {
+void SubstitutesConsumer::setDemand(int d) {
     demand = d;
 }

@@ -9,7 +9,7 @@
 #include <fstream>
 #include <json/json.h>
 
-#include "Market.h"
+#include "SubstitutesMarket.h"
 #include "Constants.cpp"
 
 
@@ -51,7 +51,7 @@ int main(int argc, const char *argv[]) {
     std::ifstream config_doc("config.json", std::ifstream::binary);
     config_doc >> root;
     readConfiguration(root);
-    Market *market = new Market();
+    SubstitutesMarket *market = new SubstitutesMarket();
     market->simulate(MarketConstants::SimulationDuration);
     return 0;
 }
