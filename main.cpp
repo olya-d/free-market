@@ -9,7 +9,7 @@
 #include <fstream>
 #include <json/json.h>
 
-#include "Market.h"
+#include "BaseMarket.h"
 #include "Constants.cpp"
 
 void readConfiguration(Json::Value *root) {
@@ -45,7 +45,7 @@ int main(int argc, const char * argv[]) {
     }
     readConfiguration(&root);
 
-    Market* market = new Market();
+    BaseMarket * market = new BaseMarket();
     market->simulate(MarketConstants::SimulationDuration);
     return 0;
 }

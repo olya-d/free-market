@@ -1,5 +1,5 @@
 //
-//  Market.cpp
+//  BaseMarket.cpp
 //  FreeMarket
 //
 //  Created by Olga on 02.12.14.
@@ -10,13 +10,13 @@
 #include <math.h>
 #include <iostream>
 
-#include "Market.h"
+#include "BaseMarket.h"
 #include "Constants.h"
 
 
-Market::Market() {
-    producers = std::vector<Producer*>();
-    consumers = std::vector<Consumer*>();
+BaseMarket::BaseMarket() {
+    producers = std::vector<BaseProducer *>();
+    consumers = std::vector<BaseConsumer *>();
     
     demandData.open(MarketConstants::DemandFile);
     priceData.open(MarketConstants::PriceFile);
@@ -25,7 +25,7 @@ Market::Market() {
     srand(time(nullptr));
     
     for (int i = 0; i < MarketConstants::NumOfProducers; i++) {
-        Producer* p = new Producer();
+        BaseProducer * p = new BaseProducer();
         p->setPrice(MarketConstants::Cost + rand() % MarketConstants::MaxStartingProfit);
         p->setSupply(rand() % MarketConstants::MaxStartingSupply);
         
@@ -33,57 +33,57 @@ Market::Market() {
     }
     
     for (int i = 0; i < MarketConstants::NumOfConsumers; i++) {
-        consumers.push_back(new Consumer());
+        consumers.push_back(new BaseConsumer());
     }
 }
 
-int Market::supply() {
+int BaseMarket::supply() {
     int sum = 0;
-    for (Producer* producer : producers) {
+    for (BaseProducer * producer : producers) {
         sum += producer->getSupply();
     }
     return sum;
 }
 
-int Market::demand() {
+int BaseMarket::demand() {
     int sum = 0;
-    for (Consumer* consumer : consumers) {
+    for (BaseConsumer * consumer : consumers) {
         sum += consumer->getDemand();
     }
     return sum;
 }
 
-float Market::averagePrice() {
+float BaseMarket::averagePrice() {
     float sum = 0.0f;
-    for (Producer* producer : producers) {
+    for (BaseProducer * producer : producers) {
         sum += producer->getPrice();
     }
     return sum / producers.size();
 }
 
-void Market::writeData() {
+void BaseMarket::writeData() {
     demandData << demand() << std::endl;
     supplyData << supply() << std::endl;
     priceData << averagePrice() << std::endl;
 }
 
-void Market::simulate(int times) {
+void BaseMarket::simulate(int times) {
     for (int i = 0; i < times; i++) {
         int generatedDemand = int(roundf((sinf(i) + 2)*20));
 
-        for (Consumer* consumer : consumers) {
+        for (BaseConsumer * consumer : consumers) {
             consumer->setDemand(generatedDemand);
         }
         
         writeData();
         
-        for (Producer* producer : producers) {
+        for (BaseProducer * producer : producers) {
             producer->produce();
         }
         
         
         while (demand() > 0 && supply() > 0) {
-            for (Consumer* consumer : consumers) {
+            for (BaseConsumer * consumer : consumers) {
                 consumer->buy(producers);
             }
         }

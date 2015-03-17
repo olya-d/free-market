@@ -1,26 +1,26 @@
 //
-//  Consumer.cpp
+//  BaseConsumer.cpp
 //  FreeMarket
 //
 //  Created by Olga on 02.12.14.
 //  Copyright (c) 2014 My Organization Name. All rights reserved.
 //
-#include "Consumer.h"
+#include "BaseConsumer.h"
 #include "Constants.h"
 
-Consumer::Consumer() {
+BaseConsumer::BaseConsumer() {
     demand = 0;
 }
 
-void Consumer::buy(std::vector<Producer*> producers) {
+void BaseConsumer::buy(std::vector<BaseProducer *> producers) {
     int totalSupply =0;
-    std::for_each(producers.begin(), producers.end(), [&](Producer* p) {
+    std::for_each(producers.begin(), producers.end(), [&](BaseProducer * p) {
         totalSupply += p->getSupply();
     });
     
     
     while (demand > 0 && totalSupply > 0) {
-        Producer* cheapestProducer = *std::min_element(producers.begin(), producers.end(), [](Producer* p1, Producer* p2) -> bool {
+        BaseProducer * cheapestProducer = *std::min_element(producers.begin(), producers.end(), [](BaseProducer * p1, BaseProducer * p2) -> bool {
             if (p1->getSupply() == 0) {
                 return false;
             }
@@ -47,10 +47,10 @@ void Consumer::buy(std::vector<Producer*> producers) {
     }
 }
 
-int Consumer::getDemand() {
+int BaseConsumer::getDemand() {
     return demand;
 }
 
-void Consumer::setDemand(int d) {
+void BaseConsumer::setDemand(int d) {
     demand = d;
 }

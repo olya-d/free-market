@@ -1,5 +1,5 @@
 //
-//  Market.h
+//  BaseMarket.h
 //  FreeMarket
 //
 //  Created by Olga on 02.12.14.
@@ -13,13 +13,13 @@
 #include <vector>
 #include <fstream>
 
-#include "Producer.h"
-#include "Consumer.h"
+#include "BaseProducer.h"
+#include "BaseConsumer.h"
 
 
-class Market {
-    std::vector<Producer*> producers;
-    std::vector<Consumer*> consumers;
+class BaseMarket {
+    std::vector<BaseProducer *> producers;
+    std::vector<BaseConsumer *> consumers;
     
     std::ofstream demandData;
     std::ofstream priceData;
@@ -28,7 +28,7 @@ class Market {
     void writeData();
     
 public:
-    Market();
+    BaseMarket();
     
     float averagePrice();
     int supply();

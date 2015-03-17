@@ -1,28 +1,28 @@
 //
-//  Producer.cpp
+//  BaseProducer.cpp
 //  FreeMarket
 //
 //  Created by Olga on 02.12.14.
 //  Copyright (c) 2014 My Organization Name. All rights reserved.
 //
 
-#include "Producer.h"
+#include "BaseProducer.h"
 #include "Constants.h"
 
-Producer::Producer() {
+BaseProducer::BaseProducer() {
     supply = 0;
     price = 0;
 }
 
 
-void Producer::generateGoods() {
+void BaseProducer::generateGoods() {
     if (price > MarketConstants::Cost) {
         supply += MarketConstants::SupplyIncrement;
     }
 }
 
 
-void Producer::produce() {
+void BaseProducer::produce() {
     if (supply > 0) {
         if (price*MarketConstants::PriceDecrement >= MarketConstants::Cost) {
             price *= MarketConstants::PriceDecrement;
@@ -34,18 +34,18 @@ void Producer::produce() {
 }
 
 
-float Producer::getPrice() {
+float BaseProducer::getPrice() {
     return price;
 }
 
-int Producer::getSupply() {
+int BaseProducer::getSupply() {
     return supply;
 }
 
-void Producer::setSupply(int s) {
+void BaseProducer::setSupply(int s) {
     supply = s;
 }
 
-void Producer::setPrice(float p) {
+void BaseProducer::setPrice(float p) {
     price = p;
 }

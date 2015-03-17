@@ -1,5 +1,5 @@
 //
-//  Producer.h
+//  BaseProducer.h
 //  FreeMarket
 //
 //  Created by Olga on 02.12.14.
@@ -11,7 +11,7 @@
 
 #include <stdio.h>
 
-class Producer {
+class BaseProducer {
 private:
     int supply;
     float price;
@@ -19,7 +19,7 @@ private:
     void generateGoods();
     
 public:
-    Producer();
+    BaseProducer();
     
     int getSupply();
     float getPrice();
