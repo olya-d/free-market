@@ -6,7 +6,6 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 include_directories(/usr/local/include/jsoncpp)
 
 set(SOURCE_FILES
-    Constants.h
     main.cpp
     SubstitutesConsumer.cpp
     SubstitutesConsumer.h
@@ -14,10 +13,17 @@ set(SOURCE_FILES
     SubstitutesMarket.h
     SubstitutesProducer.cpp
     SubstitutesProducer.h
+    IProducer.cpp
+    IProducer.h
+    BaseSimulationConfig.h
+    SimulationConfigReader.cpp
+    SimulationConfigReader.h
+    SubstitutesSimulationConfig.cpp
+    SubstitutesSimulationConfig.h
 )
 
 
-add_executable(FreeMarket ${SOURCE_FILES})
+add_executable(FreeMarket ${SOURCE_FILES} BaseSimulationConfig.cpp)
 target_link_libraries(FreeMarket /usr/local/lib/libjsoncpp.dylib)
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.json
