@@ -8,19 +8,23 @@
 
 #include "Constants.h"
 
+
 int MarketConstants::SimulationDuration = 150;
 int MarketConstants::NumOfProducers = 10;
 int MarketConstants::NumOfConsumers = 10;
 
-int MarketConstants::MaxStartingSupply = 20;
-int MarketConstants::SupplyIncrement = 80;
+int MarketConstants::MaxStartingSupply = 30;
+int MarketConstants::SupplyIncrement = 100;
 
-int MarketConstants::Cost = 5;
-int MarketConstants::MaxAcceptablePrice = Cost*10;
-int MarketConstants::MaxStartingProfit = 5;
+std::vector<std::string> MarketConstants::Goods = {"potatoes", "carrot"};
+std::map<std::string, int> MarketConstants::Costs = {{"potatoes", 10}, {"carrot", 10}};
+
+std::map<std::string, int> MarketConstants::MaxAcceptablePrices = {{"potatoes", 50}, {"carrot", 50}};
+
+std::map<std::string, int> MarketConstants::MaxStartingProfits = {{"potatoes", 15}, {"carrot", 15}};
 float MarketConstants::PriceIncrement = 1.1f;
 float MarketConstants::PriceDecrement = 0.9f;
 
 std::string MarketConstants::DemandFile = "demand.txt";
-std::string MarketConstants::SupplyFile = "supply.txt";
-std::string MarketConstants::PriceFile = "price.txt";
+std::string MarketConstants::SupplyFile = "supply.csv";
+std::string MarketConstants::PriceFile = "price.csv";
