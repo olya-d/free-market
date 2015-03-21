@@ -17,6 +17,7 @@ BaseSimulationConfig* SimulationConfigReader::getConfig() {
     if (type == "substitutes") {
         config = new SubstitutesSimulationConfig();
     }
+    std::cout << path_to_config;
     config->readConfig(path_to_config);
     return config;
 }

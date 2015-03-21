@@ -8,9 +8,10 @@
 #include <iostream>
 
 #include "SubstitutesProducer.h"
+#include "SubstitutesMarket.h"
 
 
-SubstitutesProducer::SubstitutesProducer(IMarket* market) {
+SubstitutesProducer::SubstitutesProducer(SubstitutesMarket* market) {
     this->market = market;
     for (auto good : MarketConstants::Goods) {
         supplies[good] = 0;

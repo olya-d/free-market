@@ -13,17 +13,18 @@ set(SOURCE_FILES
     SubstitutesMarket.h
     SubstitutesProducer.cpp
     SubstitutesProducer.h
-    IProducer.cpp
-    IProducer.h
     BaseSimulationConfig.h
+    BaseSimulationConfig.cpp
     SimulationConfigReader.cpp
     SimulationConfigReader.h
     SubstitutesSimulationConfig.cpp
     SubstitutesSimulationConfig.h
+    Constants.cpp
+    Constants.h
 )
 
 
-add_executable(FreeMarket ${SOURCE_FILES} BaseSimulationConfig.cpp)
+add_executable(FreeMarket ${SOURCE_FILES})
 target_link_libraries(FreeMarket /usr/local/lib/libjsoncpp.dylib)
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.json

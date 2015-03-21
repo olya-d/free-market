@@ -7,8 +7,10 @@
 //
 #include "SubstitutesConsumer.h"
 #include "Constants.h"
+#include "SubstitutesMarket.h"
 
-SubstitutesConsumer::SubstitutesConsumer(IMarket* market) {
+
+SubstitutesConsumer::SubstitutesConsumer(SubstitutesMarket* market) {
     demand = 0;
     this->market = market;
 }

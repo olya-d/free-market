@@ -12,6 +12,7 @@
 
 #include "SubstitutesMarket.h"
 #include "Constants.h"
+#include "SubstitutesConsumer.h"
 
 
 SubstitutesMarket::SubstitutesMarket() {

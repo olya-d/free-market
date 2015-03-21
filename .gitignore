@@ -1,4 +1,5 @@
 *.txt
+*.csv
 Makefile
 FreeMarket
 CMakeFiles/
@@ -6,3 +7,4 @@ CMakeFiles/
 *.cmake
 *.pdf
 config.json
+.DS_Store

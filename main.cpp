@@ -11,13 +11,14 @@
 
 
 int main(int argc, const char *argv[]) {
-    SimulationConfigReader reader = SimulationConfigReader();
-    BaseSimulationConfig* config = reader.getConfig();
-    if (config->getSimulationType() == config->SUBSTITUTES) {
-        std::cout << config->getDemandFile();
+//    SimulationConfigReader reader = SimulationConfigReader();
+//    BaseSimulationConfig* config = reader.getConfig();
+//    if (config->getSimulationType() == config->SUBSTITUTES) {
+//        std::cout << config->getDemandFile();
         SubstitutesMarket *market = new SubstitutesMarket();
-        market->simulate(config->getSimulationDuration());
-    }
+    market->simulate(100);
+//        market->simulate(config->getSimulationDuration());
+//    }
 
     return 0;
 }

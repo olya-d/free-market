@@ -14,16 +14,18 @@
 #include <iostream>
 
 #include "SubstitutesProducer.h"
-#include "IMarket.h"
+
+
+class SubstitutesMarket;
 
 
 class SubstitutesConsumer {
 private:
-    IMarket* market;
+    SubstitutesMarket* market;
     int demand;
 
 public:
-    SubstitutesConsumer(IMarket* market);
+    SubstitutesConsumer(SubstitutesMarket* market);
     
     int getDemand();
     

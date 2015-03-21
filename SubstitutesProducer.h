@@ -13,21 +13,21 @@
 #include <iostream>
 #include <vector>
 #include <map>
-#include "IMarket.h"
 #include "Constants.h"
 
+class SubstitutesMarket;
 
 class SubstitutesProducer {
 private:
     std::map<std::string, int> supplies;
     std::map<std::string, float> prices;
-    IMarket* market;
+    SubstitutesMarket* market;
 
     void generateGoods();
     void changePricing();
     
 public:
-    SubstitutesProducer(IMarket* market);
+    SubstitutesProducer(SubstitutesMarket* market);
     
     int getSupply(const std::string& good);
     int getTotalSupply();

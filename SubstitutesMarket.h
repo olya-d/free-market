@@ -13,12 +13,12 @@
 #include <vector>
 #include <fstream>
 
-#include "SubstitutesProducer.h"
-#include "SubstitutesConsumer.h"
-#include "IMarket.h"
+
+class SubstitutesProducer;
+class SubstitutesConsumer;
 
 
-class SubstitutesMarket : IMarket {
+class SubstitutesMarket {
     std::vector<SubstitutesProducer*> producers;
     std::vector<SubstitutesConsumer*> consumers;
     
