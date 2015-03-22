@@ -13,9 +13,10 @@ SimulationConfigReader::SimulationConfigReader() {
     config_doc >> root;
 
     std::string type = root.get("type", "one good").asString();
-}
-
-
-BaseSimulationConfig::SimulationType SimulationConfigReader::getSimulationType() {
-    return BaseSimulationConfig::SimulationType::SUBSTITUTES;
+    if (type == "one good") {
+        simulationType = BaseSimulationConfig::SimulationType::ONE_GOOD;
+    }
+    if (type == "substitutes") {
+        simulationType = BaseSimulationConfig::SimulationType::SUBSTITUTES;
+    }
 }

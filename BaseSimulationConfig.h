@@ -30,7 +30,6 @@ public:
     virtual void readConfig(std::string path) = 0;
 
     enum SimulationType {ONE_GOOD, SUBSTITUTES};
-    virtual SimulationType getSimulationType() = 0;
 
     int getSimulationDuration() const {
         return simulation_duration;
