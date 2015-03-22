@@ -7,8 +7,7 @@
 //
 
 #include "SimulationConfigReader.h"
-#include "SubstitutesSimulationConfig.h"
-#include "SubstitutesMarket.h"
+#include "Substitutes/SubstitutesMarket.h"
 
 
 int main(int argc, const char *argv[]) {

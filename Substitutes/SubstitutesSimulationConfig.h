@@ -5,7 +5,7 @@
 #ifndef _FREEMARKET_SUBSTITUTESSIMULATIONCONFIG_H_
 #define _FREEMARKET_SUBSTITUTESSIMULATIONCONFIG_H_
 
-#include "BaseSimulationConfig.h"
+#include "../BaseSimulationConfig.h"
 #include <json/json.h>
 
 

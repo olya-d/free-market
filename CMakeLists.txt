@@ -4,21 +4,22 @@ project(FreeMarket)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 include_directories(/usr/local/include/jsoncpp)
+include_directories(Substitutes)
 
 set(SOURCE_FILES
     main.cpp
-    SubstitutesConsumer.cpp
-    SubstitutesConsumer.h
-    SubstitutesMarket.cpp
-    SubstitutesMarket.h
-    SubstitutesProducer.cpp
-    SubstitutesProducer.h
+    Substitutes/SubstitutesConsumer.cpp
+    Substitutes/SubstitutesMarket.cpp
+    Substitutes/SubstitutesProducer.cpp
+    Substitutes/SubstitutesSimulationConfig.cpp
+    Substitutes/SubstitutesSimulationConfig.h
+    Substitutes/SubstitutesConsumer.h
+    Substitutes/SubstitutesMarket.h
+    Substitutes/SubstitutesProducer.h
     BaseSimulationConfig.h
     BaseSimulationConfig.cpp
     SimulationConfigReader.cpp
     SimulationConfigReader.h
-    SubstitutesSimulationConfig.cpp
-    SubstitutesSimulationConfig.h
     Constants.cpp
     Constants.h
 )
