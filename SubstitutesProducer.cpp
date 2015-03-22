@@ -13,20 +13,20 @@
 
 SubstitutesProducer::SubstitutesProducer(SubstitutesMarket* market) {
     this->market = market;
-    for (auto good : MarketConstants::Goods) {
+    for (auto good : market->getGoods()) {
         supplies[good] = 0;
         prices[good] = 0;
     }
 }
 
 void SubstitutesProducer::changePricing() {
-    for (const std::string good : MarketConstants::Goods) {
+    for (const std::string good : market->getGoods()) {
         if (supplies[good] > 0) {
-            if (prices[good] > MarketConstants::Costs[good]) {
-                prices[good] *= MarketConstants::PriceDecrement;
+            if (prices[good] > market->getCosts().at(good)) {
+                prices[good] *= market->getPriceDecrement();
             }
         } else {
-            prices[good] *= MarketConstants::PriceIncrement;
+            prices[good] *= market->getPriceIncrement();
         }
     }
 }
@@ -34,8 +34,8 @@ void SubstitutesProducer::changePricing() {
 
 void SubstitutesProducer::generateGoods() {
     std::pair<std::string, float> max = market->maxAveragePrice();
-    if (prices[max.first] > MarketConstants::Costs[max.first]) {
-        supplies[max.first] += MarketConstants::SupplyIncrement;
+    if (prices[max.first] > market->getCosts().at(max.first)) {
+        supplies[max.first] += market->getSupplyIncrement();
     }
 }
 

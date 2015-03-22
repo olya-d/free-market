@@ -44,6 +44,30 @@ public:
 
     void simulate(int times);
     std::string cheapestGood();
+
+    std::vector<std::string> const &getGoods() const {
+        return _config->getGoods();
+    }
+
+    std::map<std::string, int> const &getMaxAcceptablePrices() const {
+        return _config->getMaxAcceptablePrices();
+    }
+
+    std::map<std::string, int> const &getCosts() const {
+        return _config->getCosts();
+    }
+
+    int getSupplyIncrement() const {
+        return _config->getSupplyIncrement();
+    }
+
+    float getPriceIncrement() const {
+        return _config->getPriceIncrement();
+    }
+
+    float getPriceDecrement() const {
+        return _config->getPriceDecrement();
+    }
 };
 
 #endif /* defined(__FreeMarket__Market__) */

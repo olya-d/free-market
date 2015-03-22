@@ -24,7 +24,7 @@ void SubstitutesConsumer::buy(const std::string& good) {
         while (demand > 0 & goodSupply > 0) {
             SubstitutesProducer* cheapestProducer = market->cheapestProducer(good, true);
             
-            if (cheapestProducer->getPrice(good) > MarketConstants::MaxAcceptablePrices[good]) {
+            if (cheapestProducer->getPrice(good) > market->getMaxAcceptablePrices().at(good)) {
                 demand /= 2;
             }
             int cheapestSupply = cheapestProducer->getSupply(good);

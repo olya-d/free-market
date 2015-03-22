@@ -14,7 +14,7 @@
 class SimulationConfigReader {
 private:
     BaseSimulationConfig* config;
-    std::string path_to_config = "config.json";
+    std::string path_to_config = "/Users/olga_andreyeva/FreeMarket/FreeMarket/config.json";
 public:
     SimulationConfigReader();
     BaseSimulationConfig::SimulationType getSimulationType();
