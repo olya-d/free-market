@@ -19,6 +19,8 @@ private:
     void readConfig(std::string path);
 
 public:
+    SubstitutesSimulationConfig(std::string path_to_config);
+
     SimulationType getSimulationType() {
         return SimulationType::SUBSTITUTES;
     }

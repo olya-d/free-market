@@ -6,6 +6,10 @@
 #include <fstream>
 
 
+SubstitutesSimulationConfig::SubstitutesSimulationConfig(std::string path_to_config) {
+    readConfig(path_to_config);
+}
+
 void SubstitutesSimulationConfig::readConfig(std::string path) {
     Json::Value root;
     std::ifstream config_doc("config.json", std::ifstream::binary);
@@ -30,3 +34,5 @@ void SubstitutesSimulationConfig::readConfig(std::string path) {
     max_acceptable_prices = std::map<std::string, int>(max_acceptable_prices);
     costs = std::map<std::string, int>(costs);
 }
+
+

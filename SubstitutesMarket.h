@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <vector>
 #include <fstream>
+#include "SubstitutesSimulationConfig.h"
 
 
 class SubstitutesProducer;
@@ -19,11 +20,11 @@ class SubstitutesConsumer;
 
 
 class SubstitutesMarket {
+    SubstitutesSimulationConfig* _config;
+
     std::vector<SubstitutesProducer*> producers;
     std::vector<SubstitutesConsumer*> consumers;
-    
-    std::pair<std::string, float> mostExpensiveGood;
-    
+
     std::ofstream demandData;
     std::ofstream priceData;
     std::ofstream supplyData;
@@ -32,7 +33,7 @@ class SubstitutesMarket {
     
     
 public:
-    SubstitutesMarket();
+    SubstitutesMarket(SubstitutesSimulationConfig* config);
     int supply(const std::string& good);
     int totalDemand();
     int totalSupply();

@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include "BaseSimulationConfig.h"
+#include "SubstitutesSimulationConfig.h"
 
 
 class SimulationConfigReader {
@@ -15,7 +16,11 @@ private:
     BaseSimulationConfig* config;
     std::string path_to_config = "config.json";
 public:
-    BaseSimulationConfig* getConfig();
+    SimulationConfigReader();
+    BaseSimulationConfig::SimulationType getSimulationType();
+    std::string &getPathToConfig() {
+        return path_to_config;
+    }
 };
 
 

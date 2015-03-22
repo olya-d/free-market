@@ -15,7 +15,8 @@
 #include "SubstitutesConsumer.h"
 
 
-SubstitutesMarket::SubstitutesMarket() {
+SubstitutesMarket::SubstitutesMarket(SubstitutesSimulationConfig* config) {
+    _config = config;
     producers = std::vector<SubstitutesProducer*>();
     consumers = std::vector<SubstitutesConsumer*>();
     
