@@ -23,12 +23,11 @@ private:
     std::string supply_file = "supply.csv";
     std::string price_file = "price.csv";
 
+    virtual void readConfig(std::string path) = 0;
 protected:
     void readCommonConfig(Json::Value root);
 
 public:
-    virtual void readConfig(std::string path) = 0;
-
     enum SimulationType {ONE_GOOD, SUBSTITUTES};
 
     int getSimulationDuration() const {

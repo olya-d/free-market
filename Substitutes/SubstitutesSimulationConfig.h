@@ -21,10 +21,6 @@ private:
 public:
     SubstitutesSimulationConfig(std::string path_to_config);
 
-    SimulationType getSimulationType() {
-        return SimulationType::SUBSTITUTES;
-    }
-
     std::vector<std::string> const &getGoods() const {
         return goods;
     }

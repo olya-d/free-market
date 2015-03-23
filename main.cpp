@@ -7,6 +7,7 @@
 //
 
 #include "SimulationConfigReader.h"
+#include "OneGoodMarket.h"
 #include "Substitutes/SubstitutesMarket.h"
 
 
@@ -14,8 +15,12 @@ int main(int argc, const char *argv[]) {
     SimulationConfigReader reader = SimulationConfigReader();
     if (reader.getSimulationType() == BaseSimulationConfig::SimulationType::SUBSTITUTES) {
         SubstitutesSimulationConfig* config = new SubstitutesSimulationConfig(reader.getPathToConfig());
-        std::cout << config->getDemandFile();
         SubstitutesMarket *market = new SubstitutesMarket(config);
+        market->simulate(config->getSimulationDuration());
+    }
+    if (reader.getSimulationType() == BaseSimulationConfig::SimulationType::ONE_GOOD) {
+        OneGoodSimulationConfig* config = new OneGoodSimulationConfig(reader.getPathToConfig());
+        OneGoodMarket* market = new OneGoodMarket(config);
         market->simulate(config->getSimulationDuration());
     }
 

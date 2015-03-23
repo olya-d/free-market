@@ -1,5 +1,5 @@
 //
-//  BaseConsumer.h
+//  OneGoodConsumer.h
 //  FreeMarket
 //
 //  Created by Olga on 02.12.14.
@@ -12,20 +12,25 @@
 #include <stdio.h>
 #include <vector>
 
-#include "BaseProducer.h"
+#include "OneGoodProducer.h"
 
-class BaseConsumer {
+
+class OneGoodMarket;
+
+
+class OneGoodConsumer {
 private:
+    OneGoodMarket* _market;
     int demand;
     
 public:
-    BaseConsumer();
+    OneGoodConsumer(OneGoodMarket* market);
     
     int getDemand();
     
     void setDemand(int d);
     
-    void buy(std::vector<BaseProducer *> producers);
+    void buy(std::vector<OneGoodProducer *> producers);
 };
 
 #endif /* defined(__FreeMarket__Consumer__) */

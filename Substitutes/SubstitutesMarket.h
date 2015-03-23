@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 My Organization Name. All rights reserved.
 //
 
-#ifndef __FreeMarket__Market__
-#define __FreeMarket__Market__
+#ifndef __FreeMarket__SubstitutesMarket__
+#define __FreeMarket__SubstitutesMarket__
 
 #include <stdio.h>
 #include <vector>
@@ -30,8 +30,7 @@ class SubstitutesMarket {
     std::ofstream supplyData;
     
     void writeData();
-    
-    
+
 public:
     SubstitutesMarket(SubstitutesSimulationConfig* config);
     int supply(const std::string& good);
@@ -70,4 +69,4 @@ public:
     }
 };
 
-#endif /* defined(__FreeMarket__Market__) */
+#endif /* defined(__FreeMarket__SubstitutesMarket__) */

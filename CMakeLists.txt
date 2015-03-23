@@ -20,12 +20,18 @@ set(SOURCE_FILES
     BaseSimulationConfig.cpp
     SimulationConfigReader.cpp
     SimulationConfigReader.h
+    OneGoodProducer.cpp
+    OneGoodProducer.h
+    OneGoodConsumer.cpp
+    OneGoodConsumer.h
+    OneGoodMarket.cpp
+    OneGoodMarket.h
     Constants.cpp
     Constants.h
 )
 
 
-add_executable(FreeMarket ${SOURCE_FILES})
+add_executable(FreeMarket ${SOURCE_FILES} OneGoodSimulationConfig.cpp OneGoodSimulationConfig.h)
 target_link_libraries(FreeMarket /usr/local/lib/libjsoncpp.dylib)
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.json

@@ -11,15 +11,21 @@
 
 #include <stdio.h>
 
-class BaseProducer {
+
+class OneGoodMarket;
+
+
+class OneGoodProducer {
 private:
+    OneGoodMarket* _market;
+
     int supply;
     float price;
     
     void generateGoods();
     
 public:
-    BaseProducer();
+    OneGoodProducer(OneGoodMarket* market);
     
     int getSupply();
     float getPrice();

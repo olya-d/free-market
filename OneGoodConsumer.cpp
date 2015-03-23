@@ -1,26 +1,29 @@
 //
-//  BaseConsumer.cpp
+//  OneGoodConsumer.cpp
 //  FreeMarket
 //
 //  Created by Olga on 02.12.14.
 //  Copyright (c) 2014 My Organization Name. All rights reserved.
 //
-#include "BaseConsumer.h"
+#include "OneGoodConsumer.h"
 #include "Constants.h"
+#include "OneGoodMarket.h"
 
-BaseConsumer::BaseConsumer() {
+
+OneGoodConsumer::OneGoodConsumer(OneGoodMarket* market) {
+    _market = market;
     demand = 0;
 }
 
-void BaseConsumer::buy(std::vector<BaseProducer *> producers) {
+void OneGoodConsumer::buy(std::vector<OneGoodProducer *> producers) {
     int totalSupply =0;
-    std::for_each(producers.begin(), producers.end(), [&](BaseProducer * p) {
+    std::for_each(producers.begin(), producers.end(), [&](OneGoodProducer * p) {
         totalSupply += p->getSupply();
     });
     
     
     while (demand > 0 && totalSupply > 0) {
-        BaseProducer * cheapestProducer = *std::min_element(producers.begin(), producers.end(), [](BaseProducer * p1, BaseProducer * p2) -> bool {
+        OneGoodProducer * cheapestProducer = *std::min_element(producers.begin(), producers.end(), [](OneGoodProducer* p1, OneGoodProducer* p2) -> bool {
             if (p1->getSupply() == 0) {
                 return false;
             }
@@ -30,7 +33,7 @@ void BaseConsumer::buy(std::vector<BaseProducer *> producers) {
             return p1->getPrice() < p2->getPrice();
         });
         if (cheapestProducer) {
-            if (cheapestProducer->getPrice() > MarketConstants::MaxAcceptablePrice) {
+            if (cheapestProducer->getPrice() > _market->getMaxAcceptablePrice()) {
                 demand /= 2;
             }
             float cheapestSupply = cheapestProducer->getSupply();
@@ -47,10 +50,10 @@ void BaseConsumer::buy(std::vector<BaseProducer *> producers) {
     }
 }
 
-int BaseConsumer::getDemand() {
+int OneGoodConsumer::getDemand() {
     return demand;
 }
 
-void BaseConsumer::setDemand(int d) {
+void OneGoodConsumer::setDemand(int d) {
     demand = d;
 }
