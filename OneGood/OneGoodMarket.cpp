@@ -13,7 +13,6 @@
 #include "OneGoodMarket.h"
 #include "OneGoodConsumer.h"
 #include "OneGoodProducer.h"
-#include "Constants.h"
 
 
 OneGoodMarket::OneGoodMarket(OneGoodSimulationConfig* config) {

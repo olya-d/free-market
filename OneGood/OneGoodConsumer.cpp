@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 My Organization Name. All rights reserved.
 //
 #include "OneGoodConsumer.h"
-#include "Constants.h"
 #include "OneGoodMarket.h"
 
 

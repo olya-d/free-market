@@ -7,7 +7,7 @@
 //
 
 #include "SimulationConfigReader.h"
-#include "OneGoodMarket.h"
+#include "OneGood/OneGoodMarket.h"
 #include "Substitutes/SubstitutesMarket.h"
 
 

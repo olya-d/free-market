@@ -6,7 +6,7 @@
 #define _FREEMARKET_ONEGOODSIMULATIONCONFIG_H_
 
 
-#include "BaseSimulationConfig.h"
+#include "../BaseSimulationConfig.h"
 #include <json/json.h>
 
 
