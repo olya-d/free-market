@@ -16,7 +16,7 @@ SubstitutesConsumer::SubstitutesConsumer(SubstitutesMarket* market) {
 
 void SubstitutesConsumer::buy(const std::string& good) {
     int totalSupply = market->totalSupply();
-    
+
     while (demand > 0 && totalSupply > 0) {
         std::string good = market->cheapestGood();
         int goodSupply = market->supply(good);
@@ -40,6 +40,7 @@ void SubstitutesConsumer::buy(const std::string& good) {
             }
         }
     }
+    std::cout << "\n";
 }
 
 int SubstitutesConsumer::getDemand() {

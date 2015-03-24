@@ -6,7 +6,6 @@
 #define _FREEMARKET_SIMULATIONCONFIG_H_
 
 
-#include <iostream>
 #include "BaseSimulationConfig.h"
 
 

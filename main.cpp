@@ -9,6 +9,7 @@
 #include "SimulationConfigReader.h"
 #include "OneGood/OneGoodMarket.h"
 #include "Substitutes/SubstitutesMarket.h"
+#include "Complements/ComplementsMarket.h"
 
 
 int main(int argc, const char *argv[]) {
@@ -23,6 +24,10 @@ int main(int argc, const char *argv[]) {
         OneGoodMarket* market = new OneGoodMarket(config);
         market->simulate(config->getSimulationDuration());
     }
-
+    if (reader.getSimulationType() == BaseSimulationConfig::SimulationType::COMPLEMENTS) {
+        ComplementsSimulationConfig* config = new ComplementsSimulationConfig(reader.getPathToConfig());
+        ComplementsMarket* market = new ComplementsMarket(config);
+        market->simulate(config->getSimulationDuration());
+    }
     return 0;
 }

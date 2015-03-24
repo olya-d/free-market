@@ -8,7 +8,6 @@
 #include <math.h>
 #include <iostream>
 #include <random>
-#include <string>
 
 #include "SubstitutesMarket.h"
 #include "SubstitutesConsumer.h"

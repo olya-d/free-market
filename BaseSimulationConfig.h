@@ -5,7 +5,6 @@
 #ifndef _FREEMARKET_ISIMULATIONCONFIG_H_
 #define _FREEMARKET_ISIMULATIONCONFIG_H_
 
-#include <iostream>
 #include <json/json.h>
 
 
@@ -28,7 +27,7 @@ protected:
     void readCommonConfig(Json::Value root);
 
 public:
-    enum SimulationType {ONE_GOOD, SUBSTITUTES};
+    enum SimulationType {ONE_GOOD, SUBSTITUTES, COMPLEMENTS};
 
     int getSimulationDuration() const {
         return simulation_duration;

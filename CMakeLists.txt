@@ -29,8 +29,8 @@ set(SOURCE_FILES
 )
 
 
-add_executable(FreeMarket ${SOURCE_FILES} OneGood/OneGoodSimulationConfig.cpp OneGood/OneGoodSimulationConfig.h)
+add_executable(FreeMarket ${SOURCE_FILES} OneGood/OneGoodSimulationConfig.cpp OneGood/OneGoodSimulationConfig.h Complements/ComplementsMarket.cpp Complements/ComplementsMarket.h Complements/ComplementsSimulationConfig.cpp Complements/ComplementsSimulationConfig.h Complements/ComplementsProducer.cpp Complements/ComplementsProducer.h Complements/ComplementsConsumer.cpp Complements/ComplementsConsumer.h)
 target_link_libraries(FreeMarket /usr/local/lib/libjsoncpp.dylib)
 
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.json
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config_complements.json
     ${CMAKE_CURRENT_BINARY_DIR}/config.json COPYONLY)

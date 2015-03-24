@@ -19,4 +19,7 @@ SimulationConfigReader::SimulationConfigReader() {
     if (type == "substitutes") {
         simulationType = BaseSimulationConfig::SimulationType::SUBSTITUTES;
     }
+    if (type == "complements") {
+        simulationType = BaseSimulationConfig::SimulationType::COMPLEMENTS;
+    }
 }

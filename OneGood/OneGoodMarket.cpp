@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 My Organization Name. All rights reserved.
 //
 #include <stdlib.h>
-#include <time.h>
 #include <math.h>
 #include <iostream>
 
