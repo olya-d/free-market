@@ -48,8 +48,16 @@ void ComplementsProducer::changePricing() {
 }
 
 void ComplementsProducer::generateGoods() {
-    std::pair<std::string, float> max = market->maxAveragePrice();
-    if (prices[max.first] > market->getCosts().at(max.first)) {
-        supplies[max.first] += market->getSupplyIncrement();
+    std::string goodWithMaxProfit;
+    float maxProfit = 0;
+    for (auto good : market->getGoods()) {
+        float profit = market->averagePrice(good) - market->getCosts().at(good);
+        if (profit >= maxProfit) {
+            maxProfit = profit;
+            goodWithMaxProfit = good;
+        }
+    }
+    if (prices[goodWithMaxProfit] > market->getCosts().at(goodWithMaxProfit)) {
+        supplies[goodWithMaxProfit] += market->getSupplyIncrement();
     }
 }
