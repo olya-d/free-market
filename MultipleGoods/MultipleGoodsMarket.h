@@ -10,6 +10,8 @@
 #include <vector>
 #include <map>
 #include <iostream>
+#include <random>
+#include <cmath>
 
 
 template <class Config, class Producer, class Consumer>
@@ -23,6 +25,7 @@ protected:
     std::ofstream _supplyFile;
 
     virtual void _writeData();
+    virtual void _setUp(Config* config);
 public:
     virtual void simulate(int times) = 0;
     virtual int getSupplyOf(const std::string& good);
@@ -37,6 +40,30 @@ public:
     float getPriceIncrement() const;
     float getPriceDecrement() const;
 };
+
+
+template <class Config, class Producer, class Consumer>
+void MultipleGoodsMarket<Config, Producer, Consumer>::_setUp(Config *config) {
+    _config = config;
+    _producers = std::vector<Producer*>();
+    _consumers = std::vector<Consumer*>();
+
+    _demandFile.open(_config->getDemandFile());
+    _priceFile.open(_config->getPriceFile());
+    _supplyFile.open(_config->getSupplyFile());
+
+    std::string header = "";
+
+    for (int i = 0; i < _config->getGoods().size(); ++i) {
+        header += _config->getGoods().at(i);
+        if (i != _config->getGoods().size() - 1) {
+            header += ",";
+        }
+    }
+
+    _priceFile << header << std::endl;
+    _supplyFile << header << std::endl;
+}
 
 template <class Config, class Producer, class Consumer>
 void MultipleGoodsMarket<Config, Producer, Consumer>::_writeData() {

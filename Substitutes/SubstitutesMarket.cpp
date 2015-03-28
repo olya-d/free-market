@@ -7,37 +7,15 @@
 //
 #include <math.h>
 #include <iostream>
-#include <random>
-
 #include "SubstitutesMarket.h"
 
 
 SubstitutesMarket::SubstitutesMarket(SubstitutesSimulationConfig* config) {
-    _config = config;
-    _producers = std::vector<SubstitutesProducer*>();
-    _consumers = std::vector<SubstitutesConsumer*>();
-    
-    _demandFile.open(_config->getDemandFile());
-    _priceFile.open(_config->getPriceFile());
-    _supplyFile.open(_config->getSupplyFile());
-
-    std::string header = "";
-
-    for (int i = 0; i < _config->getGoods().size(); ++i) {
-        header += _config->getGoods().at(i);
-        if (i != _config->getGoods().size() - 1) {
-            header += ",";
-        }
-    }
-
-    _priceFile << header << std::endl;
-    _supplyFile << header << std::endl;
-
+    _setUp(config);
     std::random_device rd;
     std::mt19937 gen(rd());
 
     std::uniform_int_distribution<> supplyDis(0, _config->getMaxStartingSupply());
-
 
     for (int i = 0; i < _config->getNumOfProducers(); i++) {
         SubstitutesProducer* p = new SubstitutesProducer(this);
@@ -48,7 +26,7 @@ SubstitutesMarket::SubstitutesMarket(SubstitutesSimulationConfig* config) {
         }
         _producers.push_back(p);
     }
-    
+
     for (int i = 0; i < _config->getNumOfConsumers(); i++) {
         _consumers.push_back(new SubstitutesConsumer(this));
     }

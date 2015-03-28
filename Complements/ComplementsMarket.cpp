@@ -6,27 +6,7 @@
 
 
 ComplementsMarket::ComplementsMarket(ComplementsSimulationConfig *config) {
-    _config = config;
-    _producers = std::vector<ComplementsProducer*>();
-    _consumers = std::vector<ComplementsConsumer*>();
-
-    _demandFile.open(_config->getDemandFile());
-    _priceFile.open(_config->getPriceFile());
-    _supplyFile.open(_config->getSupplyFile());
-
-    std::string header = "";
-
-    for (int i = 0; i < _config->getGoods().size(); ++i) {
-        std::string good = _config->getGoods()[i];
-        header += good;
-        if (i != _config->getGoods().size() - 1) {
-            header += ",";
-        }
-    }
-
-    _priceFile << header << std::endl;
-    _supplyFile << header << std::endl;
-
+    _setUp(config);
     std::random_device rd;
     std::mt19937 gen(rd());
 
