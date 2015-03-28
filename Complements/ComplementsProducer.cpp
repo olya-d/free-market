@@ -9,6 +9,7 @@
 ComplementsProducer::ComplementsProducer(ComplementsMarket *market) {
     this->market = market;
     for (auto good : market->getGoods()) {
+        lastSold[good] = 0;
         supplies[good] = 0;
         prices[good] = 0;
     }
@@ -42,22 +43,46 @@ void ComplementsProducer::changePricing() {
                 prices[good] *= market->getPriceDecrement();
             }
         } else {
-            prices[good] *= market->getPriceIncrement();
+            if (lastSold[good] != 0) {
+                if (prices[good] < market->getCosts().at(good)) {
+                    prices[good] *= market->getPriceIncrement();
+                } else {
+                    prices[good] *= market->getPriceIncrement();
+                }
+            }
         }
     }
 }
 
 void ComplementsProducer::generateGoods() {
-    std::string goodWithMaxProfit;
+    std::string goodWithMaxProfit = market->getGoods()[0];
     float maxProfit = 0;
     for (auto good : market->getGoods()) {
-        float profit = market->averagePrice(good) - market->getCosts().at(good);
+        float profit = market->maxPrice(good) - market->getCosts().at(good);
         if (profit >= maxProfit) {
             maxProfit = profit;
             goodWithMaxProfit = good;
         }
+        if (lastSold[good] > 0 && lastSold[good] > supplies[good]) {
+            supplies[good] = lastSold[good];
+        }
     }
-    if (prices[goodWithMaxProfit] > market->getCosts().at(goodWithMaxProfit)) {
+    if (maxProfit > 0) {
         supplies[goodWithMaxProfit] += market->getSupplyIncrement();
+    }
+}
+
+void ComplementsProducer::buyFrom(const std::string &good, int q) {
+    lastSold[good] += q;
+    supplies[good] -= q;
+}
+
+bool ComplementsProducer::hasSoldGood(const std::string &good) {
+    return lastSold[good] > 0;
+}
+
+void ComplementsProducer::prepare() {
+    for (auto good : market->getGoods()) {
+        lastSold[good] = 0;
     }
 }

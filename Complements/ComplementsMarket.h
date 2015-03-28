@@ -26,8 +26,6 @@ private:
     std::ofstream priceData;
     std::ofstream supplyData;
 
-    std::string primaryGood;
-
     void writeData();
 public:
     ComplementsMarket(ComplementsSimulationConfig* config);
@@ -37,7 +35,8 @@ public:
     int totalSupply();
     int totalDemand();
     float averagePrice(const std::string& good);
-    std::pair<std::string, float> maxAveragePrice();
+    float maxPrice(const std::string& good);
+    std::string maxPricedGood();
 
     ComplementsProducer* cheapestProducer(const std::string& good, bool ignoreZeroSupply);
 
@@ -55,10 +54,6 @@ public:
 
     std::map<std::string, int> const &getRatios() const {
         return _config->getRatios();
-    }
-
-    std::string &getPrimaryGood() {
-        return primaryGood;
     }
 
     std::map<std::string, int> const &getCosts() const {

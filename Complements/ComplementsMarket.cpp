@@ -53,20 +53,21 @@ ComplementsMarket::ComplementsMarket(ComplementsSimulationConfig *config) {
 void ComplementsMarket::simulate(int times) {
     for (int i = 0; i < times; i++) {
 
-//        int generatedDemand = int(roundf((sinf(i) + 2)*20));
-        int generatedDemand = 500;
+        int generatedDemand = int(roundf((sinf(i) + 2)*20));
         for (ComplementsConsumer* consumer : consumers) {
             consumer->setDemand(generatedDemand);
         }
 
         writeData();
+        for (ComplementsProducer* producer : producers) {
+            producer->prepare();
+        }
 
         while (totalDemand() > 0 && totalSupply() > 0) {
             for (ComplementsConsumer* consumer : consumers) {
                 consumer->buy();
             }
         }
-
         for (ComplementsProducer* producer : producers) {
             producer->changePricing();
         }
@@ -118,9 +119,6 @@ int ComplementsMarket::supply(const std::string &good) {
 
 void ComplementsMarket::writeData() {
     int demand = totalDemand();
-    for (auto good : getGoods()) {
-        demand += getRatios().at(good) * totalDemand();
-    }
     demandData << demand << std::endl;
     std::cout << demand << std::endl;
     std::string supplyRow = "";
@@ -128,7 +126,7 @@ void ComplementsMarket::writeData() {
     int i = 0;
     for (auto good : getGoods()) {
         supplyRow += std::to_string(supply(good));
-        priceRow += std::to_string(averagePrice(good));
+        priceRow += std::to_string(maxPrice(good));
         if (i != _config->getGoods().size() - 1) {
             supplyRow += ",";
             priceRow += ",";
@@ -159,14 +157,24 @@ float ComplementsMarket::averagePrice(const std::string &good) {
     return sum / producers.size();
 }
 
-std::pair<std::string, float> ComplementsMarket::maxAveragePrice() {
-    std::map<std::string, float> averagePrices;
+std::string ComplementsMarket::maxPricedGood() {
+    std::map<std::string, float> maxPrices;
     for (auto good : _config->getGoods()) {
-        averagePrices[good] = averagePrice(good);
+        maxPrices[good] = maxPrice(good);
     }
-    std::pair<std::string, float> max = *std::max_element(averagePrices.begin(), averagePrices.end(),
+    std::pair<std::string, float> max = *std::max_element(maxPrices.begin(), maxPrices.end(),
             [] (std::pair<std::string, float> p1, std::pair<std::string, float> p2) -> bool {
                 return p1.second < p2.second;
             });
+    return max.first;
+}
+
+float ComplementsMarket::maxPrice(const std::string &good) {
+    float max = 0.0f;
+    for (ComplementsProducer* producer : producers) {
+        if (max < producer->getPrice(good) && producer->hasSoldGood(good)) {
+            max = producer->getPrice(good);
+        }
+    }
     return max;
 }

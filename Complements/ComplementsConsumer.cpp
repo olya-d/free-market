@@ -26,9 +26,9 @@ int ComplementsConsumer::buyFromProducer(ComplementsProducer& producer, std::str
     int cheapestSupply = producer.getSupply(good);
     if (currentDemand > cheapestSupply) {
         currentDemand -= cheapestSupply;
-        producer.setSupply(good, 0);
+        producer.buyFrom(good, cheapestSupply);
     } else {
-        producer.setSupply(good, cheapestSupply - currentDemand);
+        producer.buyFrom(good, currentDemand);
         currentDemand = 0;
     }
     return currentDemand;
@@ -57,8 +57,8 @@ void ComplementsConsumer::buy() {
             ComplementsProducer* cheapestProducer = market->cheapestProducer(good, true);
             if (cheapestProducer->getSupply(good) > 0) {
                 if (cheapestProducer->getPrice(good) > market->getMaxAcceptablePrices().at(good)) {
-                    d /= 2;
-                    goodDemand /= 2;
+                    goodDemand = demand * market->getRatios().at(good);
+                    break;
                 }
                 goodDemand = buyFromProducer(*cheapestProducer, good, goodDemand);
             }
@@ -72,7 +72,7 @@ void ComplementsConsumer::buy() {
     int i = 0;
     for (ComplementsProducer* producer : market->getProducers()) {
         for (auto good : market->getGoods()) {
-            producer->setSupply(good, supplies[i].at(good));
+            producer->buyFrom(good, producer->getSupply(good) - supplies[i].at(good));
             producer->setPrice(good, prices[i].at(good));
         }
         i += 1;
@@ -83,10 +83,6 @@ void ComplementsConsumer::buy() {
         while (goodDemand > 0) {
             ComplementsProducer* cheapestProducer = market->cheapestProducer(good, true);
             if (cheapestProducer->getSupply(good) > 0) {
-                if (cheapestProducer->getPrice(good) > market->getMaxAcceptablePrices().at(good)) {
-                    demand /= 2;
-                    goodDemand /= 2;
-                }
                 goodDemand = buyFromProducer(*cheapestProducer, good, goodDemand);
             }
         }
