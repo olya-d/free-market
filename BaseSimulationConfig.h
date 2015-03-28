@@ -9,7 +9,7 @@
 
 
 class BaseSimulationConfig {
-private:
+protected:
     int simulation_duration = 150;
     int num_of_producers = 10;
     int num_of_consumers = 10;
@@ -23,6 +23,7 @@ private:
     std::string price_file = "price.csv";
 
     virtual void readConfig(std::string path) = 0;
+    void argumentMissingExit(std::string name);
 protected:
     void readCommonConfig(Json::Value root);
 

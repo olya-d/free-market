@@ -13,3 +13,8 @@ void BaseSimulationConfig::readCommonConfig(Json::Value root) {
     supply_file = root.get("supply_file", supply_file).asString();
     price_file = root.get("price_file", price_file).asString();
 }
+
+void BaseSimulationConfig::argumentMissingExit(std::string name) {
+    std::cout << "Please specify key \"" << name << "\" in the configuration file (config.json by default)";
+    exit(1);
+}

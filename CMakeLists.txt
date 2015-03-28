@@ -37,6 +37,8 @@ set(SOURCE_FILES
     OneGood/OneGoodSimulationConfig.h
     OneGood/OneGoodSimulationConfig.cpp
     MultipleGoods/MultipleGoodsMarket.h
+    MultipleGoods/MultipleGoodsSimulationConfig.h
+    MultipleGoods/MultipleGoodsSimulationConfig.cpp
 )
 
 
