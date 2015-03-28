@@ -1,0 +1,37 @@
+{
+    /* Simulation */
+
+    "duration": 200,
+    "type": "substitutes",
+    "goods": ["potatoes", "carrot"],
+
+    /* Producers */
+
+    "number_of_producers": 10,
+    "max_starting_supply": 20,
+    "supply_increment": 80,
+    "max_starting_profits": {
+        "potatoes": 15,
+        "carrot": 15
+    },
+    "costs": {
+        "potatoes": 10,
+        "carrot": 15
+    },
+    "price_increment": 1.1,
+    "price_decrement": 0.9,
+
+    /* Consumers */
+
+    "max_acceptable_prices": {
+        "potatoes": 50,
+        "carrot": 50
+    },
+    "number_of_consumers": 10,
+
+    /* Outputs */
+
+    "demand_file": "/Users/olga_andreyeva/FreeMarket/FreeMarket/demand.txt",
+    "supply_file": "/Users/olga_andreyeva/FreeMarket/FreeMarket/supply.csv",
+    "price_file": "/Users/olga_andreyeva/FreeMarket/FreeMarket/price.csv"
+}

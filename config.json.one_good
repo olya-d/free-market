@@ -2,6 +2,7 @@
     /* Simulation */
 
     "duration": 100,
+    "type": "one good",
 
     /* Producers */
 
@@ -20,7 +21,7 @@
 
     /* Outputs */
 
-    "demand_file": "demand.txt",
-    "supply_file": "supply.txt",
-    "price_file": "price.txt"
+    "demand_file": "/Users/olga_andreyeva/FreeMarket/FreeMarket/demand.txt",
+    "supply_file": "/Users/olga_andreyeva/FreeMarket/FreeMarket/supply.txt",
+    "price_file": "/Users/olga_andreyeva/FreeMarket/FreeMarket/price.txt"
 }

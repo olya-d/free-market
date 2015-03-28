@@ -1,0 +1,40 @@
+{
+  /* Simulation */
+
+  "duration": 1000,
+  "type": "complements",
+  "goods": ["ski", "ski boots"],
+  "ratios": {
+    "ski": 1,
+    "ski boots": 2
+  },
+  /* Producers */
+
+  "number_of_producers": 2,
+  "max_starting_supply": 20,
+  "supply_increment": 40,
+  "max_starting_profits": {
+    "ski": 15,
+    "ski boots": 15
+  },
+  "costs": {
+    "ski": 200,
+    "ski boots": 120
+  },
+  "price_increment": 1.1,
+  "price_decrement": 0.9,
+
+  /* Consumers */
+
+  "max_acceptable_prices": {
+    "ski": 600,
+    "ski boots": 400
+  },
+  "number_of_consumers": 2,
+
+  /* Outputs */
+
+  "demand_file": "/Users/olga_andreyeva/FreeMarket/FreeMarket/demand.txt",
+  "supply_file": "/Users/olga_andreyeva/FreeMarket/FreeMarket/supply.csv",
+  "price_file": "/Users/olga_andreyeva/FreeMarket/FreeMarket/price.csv"
+}
