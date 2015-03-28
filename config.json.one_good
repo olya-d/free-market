@@ -21,7 +21,7 @@
 
     /* Outputs */
 
-    "demand_file": "/Users/olga_andreyeva/FreeMarket/FreeMarket/demand.txt",
-    "supply_file": "/Users/olga_andreyeva/FreeMarket/FreeMarket/supply.txt",
-    "price_file": "/Users/olga_andreyeva/FreeMarket/FreeMarket/price.txt"
+    "demand_file": "~/demand.txt",
+    "supply_file": "~/supply.csv",
+    "price_file": "~/price.csv"
 }
