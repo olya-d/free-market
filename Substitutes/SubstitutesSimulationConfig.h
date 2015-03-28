@@ -16,6 +16,7 @@ private:
     std::map<std::string, int> max_acceptable_prices;
     std::map<std::string, int> costs;
 
+    void argumentMissingExit(std::string name);
     void readConfig(std::string path);
 
 public:

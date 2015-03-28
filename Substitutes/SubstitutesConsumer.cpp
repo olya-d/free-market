@@ -40,7 +40,6 @@ void SubstitutesConsumer::buy(const std::string& good) {
             }
         }
     }
-    std::cout << "\n";
 }
 
 int SubstitutesConsumer::getDemand() {
