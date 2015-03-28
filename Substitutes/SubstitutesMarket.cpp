@@ -109,3 +109,11 @@ std::pair<std::string, float> SubstitutesMarket::maxAveragePrice() {
             });
     return max;
 }
+
+int SubstitutesMarket::getTotalSupply() {
+    int sum = 0;
+    for (SubstitutesProducer* producer : _producers) {
+        sum += producer->getTotalSupply();
+    }
+    return sum;
+}

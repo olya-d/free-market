@@ -14,12 +14,7 @@
 #include <fstream>
 #include "SubstitutesSimulationConfig.h"
 #include "../MultipleGoods/MultipleGoodsMarket.h"
-#include "SubstitutesProducer.h"
 #include "SubstitutesConsumer.h"
-
-
-class SubstitutesProducer;
-class SubstitutesConsumer;
 
 
 class SubstitutesMarket :
@@ -27,7 +22,8 @@ class SubstitutesMarket :
 public:
     SubstitutesMarket(SubstitutesSimulationConfig *config);
     std::pair<std::string, float> maxAveragePrice();
-    void simulate(int times);
+    void simulate(int times) override;
+    int getTotalSupply() override;
     std::string cheapestGood();
 };
 

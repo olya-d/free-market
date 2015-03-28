@@ -58,7 +58,7 @@ void ComplementsProducer::generateGoods() {
     std::string goodWithMaxProfit = market->getGoods()[0];
     float maxProfit = 0;
     for (auto good : market->getGoods()) {
-        float profit = market->maxPrice(good) - market->getCosts().at(good);
+        float profit = market->getMaxPriceOf(good) - market->getCosts().at(good);
         if (profit >= maxProfit) {
             maxProfit = profit;
             goodWithMaxProfit = good;

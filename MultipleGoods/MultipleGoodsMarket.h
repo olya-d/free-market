@@ -9,6 +9,7 @@
 #include <fstream>
 #include <vector>
 #include <map>
+#include <iostream>
 
 
 template <class Config, class Producer, class Consumer>
@@ -26,7 +27,7 @@ public:
     virtual void simulate(int times) = 0;
     virtual int getSupplyOf(const std::string& good);
     virtual int getTotalDemand();
-    virtual int getTotalSupply();
+    virtual int getTotalSupply() = 0;
     Producer* getCheapestProducerOf(const std::string &good, bool ignoreZeroSupply);
     virtual float getAveragePriceOf(const std::string &good);
     std::vector<std::string> const & getGoods() const;

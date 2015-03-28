@@ -9,7 +9,6 @@
 #ifndef __FreeMarket__Producer__
 #define __FreeMarket__Producer__
 
-#include <stdio.h>
 #include <iostream>
 #include <vector>
 #include <map>

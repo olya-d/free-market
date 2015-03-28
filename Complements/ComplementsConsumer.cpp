@@ -3,8 +3,6 @@
 //
 
 #include <vector>
-#include <DiscRecording/DiscRecording.h>
-
 #include "ComplementsConsumer.h"
 #include "ComplementsMarket.h"
 
@@ -49,12 +47,12 @@ void ComplementsConsumer::buy() {
         prices.push_back(producerPrices);
     }
 
-    int minRations = market->totalSupply();
+    int minRations = market->getTotalSupply();
     int d = demand;
     for (auto good : market->getGoods()) {
         int goodDemand = d * market->getRatios().at(good);
-        while (goodDemand > 0 && market->supply(good) > 0) {
-            ComplementsProducer* cheapestProducer = market->cheapestProducer(good, true);
+        while (goodDemand > 0 && market->getSupplyOf(good) > 0) {
+            ComplementsProducer* cheapestProducer = market->getCheapestProducerOf(good, true);
             if (cheapestProducer->getSupply(good) > 0) {
                 if (cheapestProducer->getPrice(good) > market->getMaxAcceptablePrices().at(good)) {
                     goodDemand = demand * market->getRatios().at(good);
@@ -81,7 +79,7 @@ void ComplementsConsumer::buy() {
     for (auto good : market->getGoods()) {
         int goodDemand = minRations * market->getRatios().at(good);
         while (goodDemand > 0) {
-            ComplementsProducer* cheapestProducer = market->cheapestProducer(good, true);
+            ComplementsProducer* cheapestProducer = market->getCheapestProducerOf(good, true);
             if (cheapestProducer->getSupply(good) > 0) {
                 goodDemand = buyFromProducer(*cheapestProducer, good, goodDemand);
             }
