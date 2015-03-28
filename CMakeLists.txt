@@ -16,6 +16,14 @@ set(SOURCE_FILES
     Substitutes/SubstitutesConsumer.h
     Substitutes/SubstitutesMarket.h
     Substitutes/SubstitutesProducer.h
+    Complements/ComplementsMarket.h
+    Complements/ComplementsMarket.cpp
+    Complements/ComplementsConsumer.h
+    Complements/ComplementsConsumer.cpp
+    Complements/ComplementsProducer.h
+    Complements/ComplementsProducer.cpp
+    Complements/ComplementsSimulationConfig.h
+    Complements/ComplementsSimulationConfig.cpp
     BaseSimulationConfig.h
     BaseSimulationConfig.cpp
     SimulationConfigReader.cpp
@@ -26,10 +34,13 @@ set(SOURCE_FILES
     OneGood/OneGoodConsumer.h
     OneGood/OneGoodMarket.cpp
     OneGood/OneGoodMarket.h
+    OneGood/OneGoodSimulationConfig.h
+    OneGood/OneGoodSimulationConfig.cpp
+    MultipleGoods/MultipleGoodsMarket.h
 )
 
 
-add_executable(FreeMarket ${SOURCE_FILES} OneGood/OneGoodSimulationConfig.cpp OneGood/OneGoodSimulationConfig.h Complements/ComplementsMarket.cpp Complements/ComplementsMarket.h Complements/ComplementsSimulationConfig.cpp Complements/ComplementsSimulationConfig.h Complements/ComplementsProducer.cpp Complements/ComplementsProducer.h Complements/ComplementsConsumer.cpp Complements/ComplementsConsumer.h)
+add_executable(FreeMarket ${SOURCE_FILES} config.json)
 target_link_libraries(FreeMarket /usr/local/lib/libjsoncpp.dylib)
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.json

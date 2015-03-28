@@ -15,13 +15,13 @@ SubstitutesConsumer::SubstitutesConsumer(SubstitutesMarket* market) {
 }
 
 void SubstitutesConsumer::buy(const std::string& good) {
-    int totalSupply = market->totalSupply();
+    int totalSupply = market->getTotalSupply();
 
     while (demand > 0 && totalSupply > 0) {
         std::string good = market->cheapestGood();
-        int goodSupply = market->supply(good);
+        int goodSupply = market->getSupplyOf(good);
         while (demand > 0 & goodSupply > 0) {
-            SubstitutesProducer* cheapestProducer = market->cheapestProducer(good, true);
+            SubstitutesProducer* cheapestProducer = market->getCheapestProducerOf(good, true);
             
             if (cheapestProducer->getPrice(good) > market->getMaxAcceptablePrices().at(good)) {
                 demand /= 2;

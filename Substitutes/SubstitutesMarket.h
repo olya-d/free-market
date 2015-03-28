@@ -13,60 +13,23 @@
 #include <vector>
 #include <fstream>
 #include "SubstitutesSimulationConfig.h"
+#include "../MultipleGoods/MultipleGoodsMarket.h"
+#include "SubstitutesProducer.h"
+#include "SubstitutesConsumer.h"
 
 
 class SubstitutesProducer;
 class SubstitutesConsumer;
 
 
-class SubstitutesMarket {
-    SubstitutesSimulationConfig* _config;
-
-    std::vector<SubstitutesProducer*> producers;
-    std::vector<SubstitutesConsumer*> consumers;
-
-    std::ofstream demandData;
-    std::ofstream priceData;
-    std::ofstream supplyData;
-    
-    void writeData();
-
+class SubstitutesMarket :
+        public MultipleGoodsMarket<SubstitutesSimulationConfig, SubstitutesProducer, SubstitutesConsumer> {
 public:
-    SubstitutesMarket(SubstitutesSimulationConfig* config);
-    int supply(const std::string& good);
-    int totalDemand();
-    int totalSupply();
-    float averagePrice(const std::string& good);
-
-    SubstitutesProducer* cheapestProducer(const std::string& good, bool ignoreZeroSupply);
+    SubstitutesMarket(SubstitutesSimulationConfig *config);
     std::pair<std::string, float> maxAveragePrice();
-
     void simulate(int times);
     std::string cheapestGood();
-
-    std::vector<std::string> const &getGoods() const {
-        return _config->getGoods();
-    }
-
-    std::map<std::string, int> const &getMaxAcceptablePrices() const {
-        return _config->getMaxAcceptablePrices();
-    }
-
-    std::map<std::string, int> const &getCosts() const {
-        return _config->getCosts();
-    }
-
-    int getSupplyIncrement() const {
-        return _config->getSupplyIncrement();
-    }
-
-    float getPriceIncrement() const {
-        return _config->getPriceIncrement();
-    }
-
-    float getPriceDecrement() const {
-        return _config->getPriceDecrement();
-    }
 };
+
 
 #endif /* defined(__FreeMarket__SubstitutesMarket__) */
