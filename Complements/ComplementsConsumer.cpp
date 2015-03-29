@@ -55,7 +55,9 @@ void ComplementsConsumer::buy() {
             ComplementsProducer* cheapestProducer = market->getCheapestProducerOf(good, true);
             if (cheapestProducer->getSupply(good) > 0) {
                 if (cheapestProducer->getPrice(good) > market->getMaxAcceptablePrices().at(good)) {
-                    goodDemand = demand * market->getRatios().at(good);
+                    demand /= 2;
+                    goodDemand /= 2;
+                    d /= 2;
                     break;
                 }
                 goodDemand = buyFromProducer(*cheapestProducer, good, goodDemand);
