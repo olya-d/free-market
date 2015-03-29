@@ -8,6 +8,8 @@
 #include <json/json.h>
 
 
+// Base class for reading simulation of different types of market.
+// SHOULD NOT BE USED BY ITSELF.
 class BaseSimulationConfig {
 private:
     int simulation_duration = 150;
@@ -18,7 +20,7 @@ private:
     float price_increment = 1.1f;
     float price_decrement = 0.9f;
 
-    std::string demand_file = "demand_.txt";
+    std::string demand_file = "demand.txt";
     std::string supply_file = "supply.csv";
     std::string price_file = "price.csv";
 

@@ -9,6 +9,7 @@
 #include <json/json.h>
 
 
+// Reads and stores configuration for the market of substitutes.
 class SubstitutesSimulationConfig : public BaseSimulationConfig {
 private:
     std::vector<std::string> goods;

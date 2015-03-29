@@ -31,7 +31,6 @@ void SubstitutesProducer::changePricing() {
     }
 }
 
-
 void SubstitutesProducer::generateGoods() {
     std::string goodWithMaxProfit = market_->getGoods()[0];
     float maxProfit = market_->getAveragePriceOf(goodWithMaxProfit) - market_->getCosts().at(goodWithMaxProfit);
@@ -47,21 +46,6 @@ void SubstitutesProducer::generateGoods() {
     }
 }
 
-
-void SubstitutesProducer::produce() {
-    changePricing();
-    generateGoods();
-}
-
-
-float SubstitutesProducer::getPrice(const std::string& good) {
-    return prices_[good];
-}
-
-int SubstitutesProducer::getSupply(const std::string& good) {
-    return supplies_[good];
-}
-
 int SubstitutesProducer::getTotalSupply() {
     int sum = 0;
     for (std::pair<std::string, int> supply : supplies_) {
@@ -70,10 +54,3 @@ int SubstitutesProducer::getTotalSupply() {
     return sum;
 }
 
-void SubstitutesProducer::setSupply(const std::string& good, int s) {
-    supplies_[good] = s;
-}
-
-void SubstitutesProducer::setPrice(const std::string& good, float p) {
-    prices_[good] = p;
-}
