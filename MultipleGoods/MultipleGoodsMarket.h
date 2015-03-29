@@ -20,9 +20,9 @@ protected:
     Config* _config;
     std::vector<Producer*> _producers;
     std::vector<Consumer*> _consumers;
-    std::ofstream _demandFile;
-    std::ofstream _priceFile;
-    std::ofstream _supplyFile;
+    std::ofstream demandFile_;
+    std::ofstream priceFile_;
+    std::ofstream supplyFile_;
 
     virtual void _writeData();
     virtual void _setUp(Config* config);
@@ -48,9 +48,9 @@ void MultipleGoodsMarket<Config, Producer, Consumer>::_setUp(Config *config) {
     _producers = std::vector<Producer*>();
     _consumers = std::vector<Consumer*>();
 
-    _demandFile.open(_config->getDemandFile());
-    _priceFile.open(_config->getPriceFile());
-    _supplyFile.open(_config->getSupplyFile());
+    demandFile_.open(_config->getDemandFile());
+    priceFile_.open(_config->getPriceFile());
+    supplyFile_.open(_config->getSupplyFile());
 
     std::string header = "";
 
@@ -61,14 +61,14 @@ void MultipleGoodsMarket<Config, Producer, Consumer>::_setUp(Config *config) {
         }
     }
 
-    _priceFile << header << std::endl;
-    _supplyFile << header << std::endl;
+    priceFile_ << header << std::endl;
+    supplyFile_ << header << std::endl;
 }
 
 template <class Config, class Producer, class Consumer>
 void MultipleGoodsMarket<Config, Producer, Consumer>::_writeData() {
     int demand = getTotalDemand();
-    _demandFile << demand << std::endl;
+    demandFile_ << demand << std::endl;
     std::cout << demand << std::endl;
     std::string supplyRow = "";
     std::string priceRow = "";
@@ -86,8 +86,8 @@ void MultipleGoodsMarket<Config, Producer, Consumer>::_writeData() {
     std::cout << supplyRow << "\n";
     std::cout << priceRow << "\n\n";
 
-    _supplyFile << supplyRow << std::endl;
-    _priceFile << priceRow << std::endl;
+    supplyFile_ << supplyRow << std::endl;
+    priceFile_ << priceRow << std::endl;
 }
 
 template <class Config, class Producer, class Consumer>

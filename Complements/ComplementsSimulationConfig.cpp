@@ -18,18 +18,18 @@ void ComplementsSimulationConfig::readConfig(std::string path) {
     readCommonConfig(root);
 
     const Json::Value goods_from_config = root["goods"];
-    goods = std::vector<std::string>();
-    max_starting_profits = std::map<std::string, int>();
-    max_acceptable_prices = std::map<std::string, int>();
-    costs = std::map<std::string, int>();
-    ratios = std::map<std::string, int>();
+    goods_ = std::vector<std::string>();
+    max_starting_profits_ = std::map<std::string, int>();
+    max_acceptable_prices_ = std::map<std::string, int>();
+    costs_ = std::map<std::string, int>();
+    ratios_ = std::map<std::string, int>();
 
     for (int i = 0; i < goods_from_config.size(); ++i) {
-        goods.push_back(goods_from_config[i].asString());
-        max_starting_profits[goods[i]] = root["max_starting_profits"][goods[i]].asInt();
-        max_acceptable_prices[goods[i]] = root["max_acceptable_prices"][goods[i]].asInt();
-        costs[goods[i]] = root["costs"][goods[i]].asInt();
-        ratios[goods[i]] = root["ratios"][goods[i]].asInt();
+        goods_.push_back(goods_from_config[i].asString());
+        max_starting_profits_[goods_[i]] = root["max_starting_profits"][goods_[i]].asInt();
+        max_acceptable_prices_[goods_[i]] = root["max_acceptable_prices"][goods_[i]].asInt();
+        costs_[goods_[i]] = root["costs"][goods_[i]].asInt();
+        ratios_[goods_[i]] = root["ratios"][goods_[i]].asInt();
     }
 }
 

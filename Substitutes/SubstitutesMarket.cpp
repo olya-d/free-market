@@ -56,9 +56,9 @@ void SubstitutesMarket::simulate(int times) {
 
     }
 
-    _demandFile.close();
-    _priceFile.close();
-    _supplyFile.close();
+    demandFile_.close();
+    priceFile_.close();
+    supplyFile_.close();
 }
 
 std::string SubstitutesMarket::cheapestGood() {

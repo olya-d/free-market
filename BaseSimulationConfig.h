@@ -18,7 +18,7 @@ private:
     float price_increment = 1.1f;
     float price_decrement = 0.9f;
 
-    std::string demand_file = "demand.txt";
+    std::string demand_file = "demand_.txt";
     std::string supply_file = "supply.csv";
     std::string price_file = "price.csv";
 

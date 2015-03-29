@@ -54,9 +54,9 @@ void ComplementsMarket::simulate(int times) {
 
     }
 
-    _demandFile.close();
-    _priceFile.close();
-    _supplyFile.close();
+    demandFile_.close();
+    priceFile_.close();
+    supplyFile_.close();
 }
 
 int ComplementsMarket::getTotalSupply() {
