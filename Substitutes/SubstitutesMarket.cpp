@@ -44,10 +44,10 @@ void SubstitutesMarket::simulate(int times) {
         _writeData();
         
         std::string goodToBuy = cheapestGood();
-        
+
         while (getTotalDemand() > 0 && getSupplyOf(goodToBuy) > 0) {
             for (SubstitutesConsumer* consumer : consumers_) {
-                consumer->buy(goodToBuy);
+                consumer->buy();
             }
         }
         

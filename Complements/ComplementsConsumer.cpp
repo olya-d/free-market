@@ -41,14 +41,14 @@ void ComplementsConsumer::buy() {
         prices.push_back(producerPrices);
     }
 
-    // Simulate the purchase for every good, to see how much can be bought (below the demand).
+    // Simulate the purchase for every good, to see how much can be bought (below the demand_).
     // minRatio: across all good, the minimum value of number of good that can be bought
     // divided by the ratio of the good = the maximum number of "total goods" that can be bought.
     int d = demand_;
     int minRatio = market_->getTotalSupply();
     for (auto good : market_->getGoods()) {
         int goodDemand = d * market_->getRatios().at(good);
-        // Until the demand is satisfied or supply is finished.
+        // Until the demand_ is satisfied or supply is finished.
         while (goodDemand > 0 && market_->getSupplyOf(good) > 0) {
             // Buy from the cheapest producer.
             ComplementsProducer* cheapestProducer = market_->getCheapestProducerOf(good, true);

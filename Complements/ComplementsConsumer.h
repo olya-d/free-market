@@ -30,7 +30,7 @@ private:
 public:
     ComplementsConsumer(ComplementsMarket* market);
     // Performs one buying round.
-    // For each good consumer tries to satisfy his/her demand by sequentially selecting the cheapest producer,
+    // For each good consumer tries to satisfy his/her demand_ by sequentially selecting the cheapest producer,
     // and then buying the maximum amount keeping the ratio of complementary goods.
     // Say there is good1 and good2 and the ratios are 1 and 2. If the customer can buy 10 units of good1 and
     // 15 units of good2, he/she will buy 7 units of good1 and 14 units of good2.

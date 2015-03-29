@@ -27,7 +27,7 @@ protected:
     std::ofstream priceFile_;
     std::ofstream supplyFile_;
 
-    // Output the current state of the market (supplies, prices and demand) to the standard output
+    // Output the current state of the market (supplies, prices and demand_) to the standard output
     // and the files (demandFile_, priceFile_, supplyFile_).
     virtual void _writeData();
     // Set up the market

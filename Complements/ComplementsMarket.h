@@ -17,10 +17,14 @@
 class ComplementsMarket :
         public MultipleGoodsMarket<ComplementsSimulationConfig, ComplementsProducer, ComplementsConsumer> {
 public:
+    // Constructor generates consumers and producers,
+    // prices and supplies of each good for each producer, using config.json file.
+    // Supply is set uniformly between 0 and max_starting supply,
+    // price - between cost of the good and cost + max_starting_profit.
     ComplementsMarket(ComplementsSimulationConfig* config);
     // Simulation consists of the following steps:
-    // 1. Generate demand using periodic function (sinf(i) + 2)*20. TODO: custom functions in the config.json
-    // 2. Output values of demand, supply and prices to the standard output and to the files
+    // 1. Generate demand_ using periodic function (sinf(i) + 2)*20. TODO: custom functions in the config.json
+    // 2. Output values of demand_, supply and prices to the standard output and to the files
     // (demandFile_, supplyFile_ and priceFile_ in MultipleGoodsMarket). TODO: separate functions to specify the output of data.
     // 3. Producers produce.
     // 4. Customers buy.

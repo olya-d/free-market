@@ -10,42 +10,35 @@
 
 
 SubstitutesConsumer::SubstitutesConsumer(SubstitutesMarket* market) {
-    demand = 0;
-    this->market = market;
+    demand_ = 0;
+    this->market_ = market;
 }
 
-void SubstitutesConsumer::buy(const std::string& good) {
-    int totalSupply = market->getTotalSupply();
+void SubstitutesConsumer::buy() {
+    int totalSupply = market_->getTotalSupply();
 
-    while (demand > 0 && totalSupply > 0) {
-        std::string good = market->cheapestGood();
-        int goodSupply = market->getSupplyOf(good);
-        while (demand > 0 & goodSupply > 0) {
-            SubstitutesProducer* cheapestProducer = market->getCheapestProducerOf(good, true);
+    while (demand_ > 0 && totalSupply > 0) {
+        std::string good = market_->cheapestGood();
+        int goodSupply = market_->getSupplyOf(good);
+        while (demand_ > 0 & goodSupply > 0) {
+            SubstitutesProducer* cheapestProducer = market_->getCheapestProducerOf(good, true);
             
-            if (cheapestProducer->getPrice(good) > market->getMaxAcceptablePrices().at(good)) {
-                demand /= 2;
+            if (cheapestProducer->getPrice(good) > market_->getMaxAcceptablePrices().at(good)) {
+                demand_ /= 2;
             }
             int cheapestSupply = cheapestProducer->getSupply(good);
-            if (demand > cheapestSupply) {
-                demand -= cheapestSupply;
+            if (demand_ > cheapestSupply) {
+                demand_ -= cheapestSupply;
                 totalSupply -= cheapestSupply;
                 goodSupply -= cheapestSupply;
                 cheapestProducer->setSupply(good, 0);
             } else {
-                totalSupply -= demand;
-                goodSupply -= demand;
-                cheapestProducer->setSupply(good, cheapestSupply - demand);
-                demand = 0;
+                totalSupply -= demand_;
+                goodSupply -= demand_;
+                cheapestProducer->setSupply(good, cheapestSupply - demand_);
+                demand_ = 0;
             }
         }
     }
 }
 
-int SubstitutesConsumer::getDemand() {
-    return demand;
-}
-
-void SubstitutesConsumer::setDemand(int d) {
-    demand = d;
-}

@@ -10,18 +10,18 @@
 
 
 OneGoodConsumer::OneGoodConsumer(OneGoodMarket* market) {
-    _market = market;
-    demand = 0;
+    market_ = market;
+    demand_ = 0;
 }
 
 void OneGoodConsumer::buy(std::vector<OneGoodProducer *> producers) {
-    int totalSupply =0;
+    int totalSupply = 0;
     std::for_each(producers.begin(), producers.end(), [&](OneGoodProducer * p) {
         totalSupply += p->getSupply();
     });
     
     
-    while (demand > 0 && totalSupply > 0) {
+    while (demand_ > 0 && totalSupply > 0) {
         OneGoodProducer * cheapestProducer = *std::min_element(producers.begin(), producers.end(), [](OneGoodProducer* p1, OneGoodProducer* p2) -> bool {
             if (p1->getSupply() == 0) {
                 return false;
@@ -32,27 +32,27 @@ void OneGoodConsumer::buy(std::vector<OneGoodProducer *> producers) {
             return p1->getPrice() < p2->getPrice();
         });
         if (cheapestProducer) {
-            if (cheapestProducer->getPrice() > _market->getMaxAcceptablePrice()) {
-                demand /= 2;
+            if (cheapestProducer->getPrice() > market_->getMaxAcceptablePrice()) {
+                demand_ /= 2;
             }
-            float cheapestSupply = cheapestProducer->getSupply();
-            if (demand > cheapestSupply) {
-                demand -= cheapestSupply;
+            int cheapestSupply = cheapestProducer->getSupply();
+            if (demand_ > cheapestSupply) {
+                demand_ -= cheapestSupply;
                 totalSupply -= cheapestSupply;
                 cheapestProducer->setSupply(0);
             } else {
-                totalSupply -= demand;
-                cheapestProducer->setSupply(cheapestSupply - demand);
-                demand = 0;
+                totalSupply -= demand_;
+                cheapestProducer->setSupply(cheapestSupply - demand_);
+                demand_ = 0;
             }
         }
     }
 }
 
 int OneGoodConsumer::getDemand() {
-    return demand;
+    return demand_;
 }
 
 void OneGoodConsumer::setDemand(int d) {
-    demand = d;
+    demand_ = d;
 }
