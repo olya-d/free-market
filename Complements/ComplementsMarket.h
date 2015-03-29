@@ -33,11 +33,11 @@ public:
     float getMaxPriceOf(const std::string &good);
 
     std::vector<ComplementsProducer*> &getProducers()  {
-        return _producers;
+        return producers_;
     }
 
     std::map<std::string, int> const &getRatios() const {
-        return _config->getRatios();
+        return config_->getRatios();
     }
 };
 

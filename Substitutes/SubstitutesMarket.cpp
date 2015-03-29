@@ -15,20 +15,21 @@ SubstitutesMarket::SubstitutesMarket(SubstitutesSimulationConfig* config) {
     std::random_device rd;
     std::mt19937 gen(rd());
 
-    std::uniform_int_distribution<> supplyDis(0, _config->getMaxStartingSupply());
+    std::uniform_int_distribution<> supplyDis(0, config_->getMaxStartingSupply());
 
-    for (int i = 0; i < _config->getNumOfProducers(); i++) {
+    for (int i = 0; i < config_->getNumOfProducers(); i++) {
         SubstitutesProducer* p = new SubstitutesProducer(this);
-        for (const std::string& good : _config->getGoods()) {
-            std::uniform_real_distribution<> priceDis(_config->getCosts().at(good), _config->getCosts().at(good) + _config->getMaxStartingProfits().at(good));
+        for (const std::string& good : config_->getGoods()) {
+            std::uniform_real_distribution<> priceDis(
+                    config_->getCosts().at(good), config_->getCosts().at(good) + config_->getMaxStartingProfits().at(good));
             p->setPrice(good, priceDis(gen));
             p->setSupply(good, supplyDis(gen));
         }
-        _producers.push_back(p);
+        producers_.push_back(p);
     }
 
-    for (int i = 0; i < _config->getNumOfConsumers(); i++) {
-        _consumers.push_back(new SubstitutesConsumer(this));
+    for (int i = 0; i < config_->getNumOfConsumers(); i++) {
+        consumers_.push_back(new SubstitutesConsumer(this));
     }
 }
 
@@ -36,7 +37,7 @@ void SubstitutesMarket::simulate(int times) {
     for (int i = 0; i < times; i++) {
 
         int generatedDemand = int(roundf((sinf(i) + 2)*20));
-        for (SubstitutesConsumer* consumer : _consumers) {
+        for (SubstitutesConsumer* consumer : consumers_) {
             consumer->setDemand(generatedDemand);
         }
         
@@ -45,12 +46,12 @@ void SubstitutesMarket::simulate(int times) {
         std::string goodToBuy = cheapestGood();
         
         while (getTotalDemand() > 0 && getSupplyOf(goodToBuy) > 0) {
-            for (SubstitutesConsumer* consumer : _consumers) {
+            for (SubstitutesConsumer* consumer : consumers_) {
                 consumer->buy(goodToBuy);
             }
         }
         
-        for (SubstitutesProducer* producer : _producers) {
+        for (SubstitutesProducer* producer : producers_) {
             producer->produce();
         }
 
@@ -63,7 +64,7 @@ void SubstitutesMarket::simulate(int times) {
 
 std::string SubstitutesMarket::cheapestGood() {
     std::map<std::string, float> minPrices;
-    for (auto good : _config->getGoods()) {
+    for (auto good : config_->getGoods()) {
         if (getSupplyOf(good) == 0) {
             continue;
         }
@@ -78,7 +79,7 @@ std::string SubstitutesMarket::cheapestGood() {
 
 std::pair<std::string, float> SubstitutesMarket::maxAveragePrice() {
     std::map<std::string, float> averagePrices;
-    for (auto good : _config->getGoods()) {
+    for (auto good : config_->getGoods()) {
         averagePrices[good] = getAveragePriceOf(good);
     }
     std::pair<std::string, float> max = *std::max_element(averagePrices.begin(), averagePrices.end(),
@@ -90,7 +91,7 @@ std::pair<std::string, float> SubstitutesMarket::maxAveragePrice() {
 
 int SubstitutesMarket::getTotalSupply() {
     int sum = 0;
-    for (SubstitutesProducer* producer : _producers) {
+    for (SubstitutesProducer* producer : producers_) {
         sum += producer->getTotalSupply();
     }
     return sum;
