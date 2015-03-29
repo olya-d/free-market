@@ -52,7 +52,10 @@ void SubstitutesMarket::simulate(int times) {
         }
         
         for (SubstitutesProducer* producer : producers_) {
-            producer->produce();
+            producer->changePricing();
+        }
+        for (SubstitutesProducer* producer : producers_) {
+            producer->generateGoods();
         }
 
     }
@@ -75,18 +78,6 @@ std::string SubstitutesMarket::cheapestGood() {
         return p1.second < p2.second;
     });
     return min.first;
-}
-
-std::pair<std::string, float> SubstitutesMarket::maxAveragePrice() {
-    std::map<std::string, float> averagePrices;
-    for (auto good : config_->getGoods()) {
-        averagePrices[good] = getAveragePriceOf(good);
-    }
-    std::pair<std::string, float> max = *std::max_element(averagePrices.begin(), averagePrices.end(),
-            [] (std::pair<std::string, float> p1, std::pair<std::string, float> p2) -> bool {
-                return p1.second < p2.second;
-            });
-    return max;
 }
 
 int SubstitutesMarket::getTotalSupply() {

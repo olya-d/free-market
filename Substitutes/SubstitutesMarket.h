@@ -26,8 +26,6 @@ public:
     // Supply is set uniformly between 0 and max_starting supply,
     // price - between cost of the good and cost + max_starting_profit.
     SubstitutesMarket(SubstitutesSimulationConfig *config);
-    // Returns the good with maximum average price.
-    std::pair<std::string, float> maxAveragePrice();
     // Simulation consists of the following steps:
     // 1. Generate demand_ using periodic function (sinf(i) + 2)*20. TODO: custom functions in the config.json
     // 2. Output values of demand_, supply and prices to the standard output and to the files

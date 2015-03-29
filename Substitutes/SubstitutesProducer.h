@@ -18,13 +18,10 @@ class SubstitutesMarket;
 
 class SubstitutesProducer {
 private:
-    std::map<std::string, int> supplies;
-    std::map<std::string, float> prices;
-    SubstitutesMarket* market;
+    std::map<std::string, int> supplies_;
+    std::map<std::string, float> prices_;
+    SubstitutesMarket*market_;
 
-    void generateGoods();
-    void changePricing();
-    
 public:
     SubstitutesProducer(SubstitutesMarket* market);
     
@@ -36,6 +33,8 @@ public:
     void setPrice(const std::string& good, float p);
     
     void produce();
+    void generateGoods();
+    void changePricing();
 };
 
 
