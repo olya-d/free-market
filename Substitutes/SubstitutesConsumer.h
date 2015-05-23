@@ -18,20 +18,29 @@
 
 class SubstitutesMarket;
 
-
+// Simulates behaviour of the consumer in the market of substitutes.
 class SubstitutesConsumer {
 private:
-    SubstitutesMarket* market;
-    int demand;
+    SubstitutesMarket* market_;
+    int demand_;
 
 public:
     SubstitutesConsumer(SubstitutesMarket* market);
     
-    int getDemand();
-    
-    void setDemand(int d);
-    
-    void buy(const std::string& good);
+    int getDemand() const {
+        return demand_;
+    }
+    // TODO: demand can't be negative.
+    void setDemand(int d) {
+        demand_ = d;
+    }
+    // Consumer buys in the following way:
+    // 1. If demand is greater than zero and there is some supply in the market, go to 2,
+    // otherwise finish.
+    // 2. Find the cheapest good and try to satisfy the demand by sequentially buying
+    // from the cheapest producer.
+    // When demand is satisfied or the supply of the good is finished, go to 1.
+    void buy();
 };
 
 #endif /* defined(__FreeMarket__Consumer__) */

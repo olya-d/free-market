@@ -8,6 +8,8 @@
 #include <json/json.h>
 
 
+// Base class for reading simulation of different types of market.
+// SHOULD NOT BE USED BY ITSELF.
 class BaseSimulationConfig {
 protected:
     int simulation_duration = 150;

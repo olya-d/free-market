@@ -9,6 +9,7 @@
 #include "BaseSimulationConfig.h"
 
 
+// Determines the type of simulation.
 class SimulationConfigReader {
 private:
     std::string path_to_config = "config.json";
