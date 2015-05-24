@@ -92,7 +92,6 @@ template <class Config, class Producer, class Consumer>
 void MultipleGoodsMarket<Config, Producer, Consumer>::_writeData() {
     int demand = getTotalDemand();
     demandFile_ << demand << std::endl;
-    std::cout << demand << std::endl;
     std::string supplyRow = "";
     std::string priceRow = "";
     int i = 0;
@@ -105,9 +104,6 @@ void MultipleGoodsMarket<Config, Producer, Consumer>::_writeData() {
         }
         i += 1;
     }
-
-    std::cout << supplyRow << "\n";
-    std::cout << priceRow << "\n\n";
 
     supplyFile_ << supplyRow << std::endl;
     priceFile_ << priceRow << std::endl;
