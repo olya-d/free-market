@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>User's Guide</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="/theme/css/main.css" type="text/css" />
+
+        <!--[if IE]>
+                <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+        <!--[if lte IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="/css/ie.css"/>
+                <script src="/js/IE8.js" type="text/javascript"></script><![endif]-->
+
+        <!--[if lt IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="/css/ie6.css"/><![endif]-->
+
+</head>
+
+<body id="index" class="home">
+    <header id="banner" class="body">
+            <h1><a href="">Free Market Simulation </a></h1>
+            </nav>
+    </header><!-- /#banner -->
+        
+<section id="content" class="body">    
+    <h1 class="entry-title">User's Guide</h1>
+    <div class="contents topic" id="table-of-contents">
+<p class="topic-title first">Table of contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#overview" id="id5">Overview</a><ul>
+<li><a class="reference internal" href="#simulation-of-consumer" id="id6">Simulation of consumer</a></li>
+<li><a class="reference internal" href="#simulation-of-producer" id="id7">Simulation of producer</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#requirements" id="id8">Requirements</a></li>
+<li><a class="reference internal" href="#example-of-usage" id="id9">Example of usage</a></li>
+<li><a class="reference internal" href="#configuration" id="id10">Configuration</a><ul>
+<li><a class="reference internal" href="#example-of-configuration-for-market-of-one-good" id="id11">Example of configuration for market of one good</a></li>
+<li><a class="reference internal" href="#example-of-configuration-for-market-of-complements" id="id12">Example of configuration for market of complements</a></li>
+<li><a class="reference internal" href="#example-of-configuration-for-market-of-substitutes" id="id13">Example of configuration for market of substitutes</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#complements" id="id14">Complements</a><ul>
+<li><a class="reference internal" href="#consumer-s-behaviour" id="id15">Consumer's behaviour</a></li>
+<li><a class="reference internal" href="#producer-s-behaviour" id="id16">Producer's behaviour</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#one-good" id="id17">One Good</a><ul>
+<li><a class="reference internal" href="#id1" id="id18">Consumer's behaviour</a></li>
+<li><a class="reference internal" href="#id2" id="id19">Producer's behaviour</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#substitutes" id="id20">Substitutes</a><ul>
+<li><a class="reference internal" href="#id3" id="id21">Consumer's behaviour</a></li>
+<li><a class="reference internal" href="#id4" id="id22">Producer's behaviour</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="overview">
+<h2><a class="toc-backref" href="#id5">Overview</a></h2>
+<p>The program simulates three types of markets: market of one good, market of several substitutes and market of several complements.</p>
+<p>Each simulation assumes the existence of identical consumers, whose demand changes as a periodic function <span class="formula">(sin<i>i</i> + 2)*20</span>, and consists of three essential steps:</p>
+<ol class="arabic simple">
+<li>Generate demand.</li>
+<li>Consumers buy goods.</li>
+<li>Producers change pricing based on the goods sold.</li>
+<li>Producers produce goods.</li>
+</ol>
+<p>After each step of simulation the current state is output to the files, namely current demand, current prices and current supplies.</p>
+<p>The project consists of three sub-projects:</p>
+<ol class="arabic simple">
+<li><a class="reference internal" href="#complements">Complements</a></li>
+<li><a class="reference internal" href="#one-good">One Good</a></li>
+<li><a class="reference internal" href="#substitutes">Substitutes</a></li>
+</ol>
+<p>Each sub-project is responsible for simulating one type of market.</p>
+<div class="section" id="simulation-of-consumer">
+<h3><a class="toc-backref" href="#id6">Simulation of consumer</a></h3>
+<p>On each step of simulation consumer attempts to satisfy the current demand.</p>
+</div>
+<div class="section" id="simulation-of-producer">
+<h3><a class="toc-backref" href="#id7">Simulation of producer</a></h3>
+<p>The simulation of producer's behaviour consists of two steps:</p>
+<ol class="arabic simple">
+<li><strong>Change of price</strong>. Producer can increase or decrease price based on the number of goods that was sold.</li>
+<li><strong>Production of new supply</strong>. Producer increases supply of the good that currently brings the maximum profit.</li>
+</ol>
+</div>
+</div>
+<div class="section" id="requirements">
+<h2><a class="toc-backref" href="#id8">Requirements</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="http://www.cmake.org/">CMake</a></li>
+<li><a class="reference external" href="https://github.com/open-source-parsers/jsoncpp">JsonCpp</a></li>
+</ul>
+</div>
+<div class="section" id="example-of-usage">
+<h2><a class="toc-backref" href="#id9">Example of usage</a></h2>
+<p>First, compile:</p>
+<div class="highlight"><pre>FreeMarket &gt; cmake  --build .
+</pre></div>
+<p>Now you have an executable <tt class="docutils literal">FreeMarket</tt>.
+Specify configuration in <tt class="docutils literal">config.json</tt> file (please use full paths for &quot;demand_file&quot;, &quot;price_file&quot; and &quot;supply_file&quot;). Now run the executable:</p>
+<div class="highlight"><pre>FreeMarket &gt; ./FreeMarket
+</pre></div>
+<p>The result of simulation is output to the specified files. For example in case configuration from <a class="reference internal" href="#example-of-configuration-for-market-of-complements">Example of configuration for market of complements</a> the output starts like this:</p>
+<p><strong>demand.csv</strong></p>
+<div class="highlight"><pre><span class="mi">400</span>
+<span class="mi">570</span>
+<span class="mi">580</span>
+<span class="mi">430</span>
+<span class="mi">250</span>
+<span class="mi">210</span>
+<span class="mi">340</span>
+<span class="mi">530</span>
+<span class="mi">600</span>
+<span class="mi">480</span>
+</pre></div>
+<p><strong>price.csv</strong></p>
+<div class="highlight"><pre><span class="n">ski</span><span class="p">,</span><span class="n">ski</span> <span class="n">boots</span>
+<span class="mf">202.529282</span><span class="p">,</span><span class="mf">131.666779</span>
+<span class="mf">182.276337</span><span class="p">,</span><span class="mf">144.833450</span>
+<span class="mf">200.503983</span><span class="p">,</span><span class="mf">130.350098</span>
+<span class="mf">220.554382</span><span class="p">,</span><span class="mf">117.315079</span>
+<span class="mf">220.317810</span><span class="p">,</span><span class="mf">129.046600</span>
+<span class="mf">198.286011</span><span class="p">,</span><span class="mf">128.903168</span>
+<span class="mf">187.485687</span><span class="p">,</span><span class="mf">121.884491</span>
+<span class="mf">196.513947</span><span class="p">,</span><span class="mf">121.439316</span>
+<span class="mf">206.234253</span><span class="p">,</span><span class="mf">120.665649</span>
+</pre></div>
+<p><strong>supply.csv</strong></p>
+<div class="highlight"><pre><span class="n">ski</span><span class="p">,</span><span class="n">ski</span> <span class="n">boots</span>
+<span class="mi">15</span><span class="p">,</span><span class="mi">26</span>
+<span class="mi">14</span><span class="p">,</span><span class="mi">106</span>
+<span class="mi">14</span><span class="p">,</span><span class="mi">164</span>
+<span class="mi">94</span><span class="p">,</span><span class="mi">136</span>
+<span class="mi">159</span><span class="p">,</span><span class="mi">136</span>
+<span class="mi">143</span><span class="p">,</span><span class="mi">180</span>
+<span class="mi">135</span><span class="p">,</span><span class="mi">244</span>
+<span class="mi">109</span><span class="p">,</span><span class="mi">312</span>
+<span class="mi">186</span><span class="p">,</span><span class="mi">248</span>
+</pre></div>
+</div>
+<div class="section" id="configuration">
+<h2><a class="toc-backref" href="#id10">Configuration</a></h2>
+<p>The program expects configuration in the JSON format, slightly different configuration is required for different type of markets.</p>
+<div class="section" id="example-of-configuration-for-market-of-one-good">
+<h3><a class="toc-backref" href="#id11">Example of configuration for market of one good</a></h3>
+<div class="highlight"><pre><span class="p">{</span>
+<span class="cm">/* Simulation */</span>
+
+<span class="c1">// the number of steps in the simulation</span>
+<span class="s2">&quot;duration&quot;</span><span class="o">:</span> <span class="mi">100</span><span class="p">,</span>
+<span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;one good&quot;</span><span class="p">,</span>
+
+<span class="cm">/* Producers */</span>
+
+<span class="s2">&quot;number_of_producers&quot;</span><span class="o">:</span> <span class="mi">10</span><span class="p">,</span>
+<span class="c1">// Starting supplies will be generated between 0 and &quot;max_starting_supply&quot;</span>
+<span class="s2">&quot;max_starting_supply&quot;</span><span class="o">:</span> <span class="mi">20</span><span class="p">,</span>
+<span class="c1">// When market price is greater than the cost,</span>
+<span class="c1">// supply will be incremented by &quot;supply_incement&quot;</span>
+<span class="s2">&quot;supply_increment&quot;</span><span class="o">:</span> <span class="mi">80</span><span class="p">,</span>
+<span class="c1">// Starting price will be generated between &quot;cost&quot; and &quot;cost&quot; + &quot;max_starting_profit&quot;</span>
+<span class="s2">&quot;max_starting_profit&quot;</span><span class="o">:</span> <span class="mi">5</span><span class="p">,</span>
+<span class="c1">// cost of production of the good</span>
+<span class="s2">&quot;cost&quot;</span><span class="o">:</span> <span class="mi">5</span><span class="p">,</span>
+<span class="c1">// When all supply was sold, the producer will increment the price</span>
+<span class="c1">// by multiplying by &quot;price_increment&quot;</span>
+<span class="s2">&quot;price_increment&quot;</span><span class="o">:</span> <span class="mf">1.1</span><span class="p">,</span>
+<span class="c1">// When some supply is left, the producer will decrement the price</span>
+<span class="c1">// by multiplying by &quot;price_decrement&quot;</span>
+<span class="s2">&quot;price_decrement&quot;</span><span class="o">:</span> <span class="mf">0.9</span><span class="p">,</span>
+
+<span class="cm">/* Consumers */</span>
+
+<span class="c1">// Consumers will stop buying when price is bigger than &quot;max_acceptable_price&quot;</span>
+<span class="s2">&quot;max_acceptable_price&quot;</span><span class="o">:</span> <span class="mi">50</span><span class="p">,</span>
+<span class="s2">&quot;number_of_consumers&quot;</span><span class="o">:</span> <span class="mi">10</span><span class="p">,</span>
+
+<span class="cm">/* Outputs */</span>
+
+<span class="s2">&quot;demand_file&quot;</span><span class="o">:</span> <span class="s2">&quot;~/demand.txt&quot;</span><span class="p">,</span>
+<span class="s2">&quot;supply_file&quot;</span><span class="o">:</span> <span class="s2">&quot;~/supply.csv&quot;</span><span class="p">,</span>
+<span class="s2">&quot;price_file&quot;</span><span class="o">:</span> <span class="s2">&quot;~/price.csv&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="section" id="example-of-configuration-for-market-of-complements">
+<h3><a class="toc-backref" href="#id12">Example of configuration for market of complements</a></h3>
+<div class="highlight"><pre><span class="p">{</span>
+<span class="cm">/* Simulation */</span>
+
+<span class="c1">// the number of steps in the simulation</span>
+<span class="s2">&quot;duration&quot;</span><span class="o">:</span> <span class="mi">1000</span><span class="p">,</span>
+<span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;complements&quot;</span><span class="p">,</span>
+<span class="s2">&quot;goods&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;ski&quot;</span><span class="p">,</span> <span class="s2">&quot;ski boots&quot;</span><span class="p">],</span>
+
+<span class="cm">/* Producers */</span>
+
+<span class="s2">&quot;number_of_producers&quot;</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span>
+<span class="c1">// Starting supplies will be generated between 0 and &quot;max_starting_supply&quot;</span>
+<span class="s2">&quot;max_starting_supply&quot;</span><span class="o">:</span> <span class="mi">20</span><span class="p">,</span>
+<span class="c1">// When market price is greater than the cost,</span>
+<span class="c1">// supply will be incremented by &quot;supply_incement&quot;</span>
+<span class="s2">&quot;supply_increment&quot;</span><span class="o">:</span> <span class="mi">40</span><span class="p">,</span>
+<span class="c1">// Starting price will be generated between &quot;cost&quot; and &quot;cost&quot; + &quot;max_starting_profit&quot;</span>
+<span class="s2">&quot;max_starting_profits&quot;</span><span class="o">:</span> <span class="p">{</span>
+  <span class="s2">&quot;ski&quot;</span><span class="o">:</span> <span class="mi">15</span><span class="p">,</span>
+  <span class="s2">&quot;ski boots&quot;</span><span class="o">:</span> <span class="mi">15</span>
+<span class="p">},</span>
+<span class="c1">// Cost of production of the good</span>
+<span class="s2">&quot;costs&quot;</span><span class="o">:</span> <span class="p">{</span>
+  <span class="s2">&quot;ski&quot;</span><span class="o">:</span> <span class="mi">200</span><span class="p">,</span>
+  <span class="s2">&quot;ski boots&quot;</span><span class="o">:</span> <span class="mi">120</span>
+<span class="p">},</span>
+<span class="c1">// When all supply was sold, the producer will increment the price</span>
+<span class="c1">// by multiplying by &quot;price_increment&quot;</span>
+<span class="s2">&quot;price_increment&quot;</span><span class="o">:</span> <span class="mf">1.1</span><span class="p">,</span>
+<span class="c1">// When some supply is left, the producer will decrement the price</span>
+<span class="c1">// by multiplying by &quot;price_decrement&quot;</span>
+<span class="s2">&quot;price_decrement&quot;</span><span class="o">:</span> <span class="mf">0.9</span><span class="p">,</span>
+
+<span class="cm">/* Consumers */</span>
+
+<span class="c1">// Consumers will stop buying when price is bigger than &quot;max_acceptable_price&quot;</span>
+<span class="s2">&quot;max_acceptable_prices&quot;</span><span class="o">:</span> <span class="p">{</span>
+  <span class="s2">&quot;ski&quot;</span><span class="o">:</span> <span class="mi">600</span><span class="p">,</span>
+  <span class="s2">&quot;ski boots&quot;</span><span class="o">:</span> <span class="mi">400</span>
+<span class="p">},</span>
+<span class="c1">// How many items of each good consumers buy together</span>
+<span class="s2">&quot;ratios&quot;</span><span class="o">:</span> <span class="p">{</span>
+  <span class="s2">&quot;ski&quot;</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="s2">&quot;ski boots&quot;</span><span class="o">:</span> <span class="mi">2</span>
+<span class="p">},</span>
+<span class="s2">&quot;number_of_consumers&quot;</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span>
+
+<span class="cm">/* Outputs */</span>
+
+<span class="s2">&quot;demand_file&quot;</span><span class="o">:</span> <span class="s2">&quot;~/demand.txt&quot;</span><span class="p">,</span>
+<span class="s2">&quot;supply_file&quot;</span><span class="o">:</span> <span class="s2">&quot;~/supply.csv&quot;</span><span class="p">,</span>
+<span class="s2">&quot;price_file&quot;</span><span class="o">:</span> <span class="s2">&quot;~/price.csv&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="section" id="example-of-configuration-for-market-of-substitutes">
+<h3><a class="toc-backref" href="#id13">Example of configuration for market of substitutes</a></h3>
+<div class="highlight"><pre><span class="p">{</span>
+<span class="cm">/* Simulation */</span>
+
+<span class="c1">// the number of steps in the simulation</span>
+<span class="s2">&quot;duration&quot;</span><span class="o">:</span> <span class="mi">1000</span><span class="p">,</span>
+<span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;substitutes&quot;</span><span class="p">,</span>
+<span class="s2">&quot;goods&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;ski&quot;</span><span class="p">,</span> <span class="s2">&quot;ski boots&quot;</span><span class="p">],</span>
+
+<span class="cm">/* Producers */</span>
+
+<span class="s2">&quot;number_of_producers&quot;</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span>
+<span class="c1">// Starting supplies will be generated between 0 and &quot;max_starting_supply&quot;</span>
+<span class="s2">&quot;max_starting_supply&quot;</span><span class="o">:</span> <span class="mi">20</span><span class="p">,</span>
+<span class="c1">// When market price is greater than the cost,</span>
+<span class="c1">// supply will be incremented by &quot;supply_incement&quot;</span>
+<span class="s2">&quot;supply_increment&quot;</span><span class="o">:</span> <span class="mi">40</span><span class="p">,</span>
+<span class="c1">// Starting price will be generated between &quot;cost&quot; and &quot;cost&quot; + &quot;max_starting_profit&quot;</span>
+<span class="s2">&quot;max_starting_profits&quot;</span><span class="o">:</span> <span class="p">{</span>
+  <span class="s2">&quot;ski&quot;</span><span class="o">:</span> <span class="mi">15</span><span class="p">,</span>
+  <span class="s2">&quot;ski boots&quot;</span><span class="o">:</span> <span class="mi">15</span>
+<span class="p">},</span>
+<span class="c1">// Cost of production of the good</span>
+<span class="s2">&quot;costs&quot;</span><span class="o">:</span> <span class="p">{</span>
+  <span class="s2">&quot;ski&quot;</span><span class="o">:</span> <span class="mi">200</span><span class="p">,</span>
+  <span class="s2">&quot;ski boots&quot;</span><span class="o">:</span> <span class="mi">120</span>
+<span class="p">},</span>
+<span class="c1">// When all supply was sold, the producer will increment the price</span>
+<span class="c1">// by multiplying by &quot;price_increment&quot;</span>
+<span class="s2">&quot;price_increment&quot;</span><span class="o">:</span> <span class="mf">1.1</span><span class="p">,</span>
+<span class="c1">// When some supply is left, the producer will decrement the price</span>
+<span class="c1">// by multiplying by &quot;price_decrement&quot;</span>
+<span class="s2">&quot;price_decrement&quot;</span><span class="o">:</span> <span class="mf">0.9</span><span class="p">,</span>
+
+<span class="cm">/* Consumers */</span>
+
+<span class="c1">// Consumers will stop buying when price is bigger than &quot;max_acceptable_price&quot;</span>
+<span class="s2">&quot;max_acceptable_prices&quot;</span><span class="o">:</span> <span class="p">{</span>
+  <span class="s2">&quot;ski&quot;</span><span class="o">:</span> <span class="mi">600</span><span class="p">,</span>
+  <span class="s2">&quot;ski boots&quot;</span><span class="o">:</span> <span class="mi">400</span>
+<span class="p">},</span>
+<span class="s2">&quot;number_of_consumers&quot;</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span>
+
+<span class="cm">/* Outputs */</span>
+
+<span class="s2">&quot;demand_file&quot;</span><span class="o">:</span> <span class="s2">&quot;~/demand.txt&quot;</span><span class="p">,</span>
+<span class="s2">&quot;supply_file&quot;</span><span class="o">:</span> <span class="s2">&quot;~/supply.csv&quot;</span><span class="p">,</span>
+<span class="s2">&quot;price_file&quot;</span><span class="o">:</span> <span class="s2">&quot;~/price.csv&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="complements">
+<h2><a class="toc-backref" href="#id14">Complements</a></h2>
+<div class="section" id="consumer-s-behaviour">
+<h3><a class="toc-backref" href="#id15">Consumer's behaviour</a></h3>
+<p>For each good consumer tries to satisfy his or her demand by sequentially selecting the cheapest producer, and then buying the maximum amount keeping the ratio of complementary goods. Say there is good1 and good2 and the ratios are 1 and 2. If the customer can buy 10 units of good1 and 15 units of good2,
+he or she will buy 7 units of good1 and 14 units of good2.</p>
+</div>
+<div class="section" id="producer-s-behaviour">
+<h3><a class="toc-backref" href="#id16">Producer's behaviour</a></h3>
+<p>Producer changes pricing according to the following rules:</p>
+<ol class="arabic simple">
+<li>If the leftover supply is non-zero, and the price of the good set by producer is greater than the cost of the good, decrement the price by &quot;price_decrement&quot;.</li>
+<li>If the leftover supply is zero, and the number of goods that was sold is non-zero, increment the price by multiplying by &quot;price_increment&quot;.</li>
+</ol>
+<p>Producer generates goods according to the following rules:</p>
+<ol class="arabic simple">
+<li>Increase supply of each good up to the number of sold items in the current iteration.</li>
+<li>Find the good with maximum profit and increase its supply by &quot;supply_increment&quot;.</li>
+</ol>
+</div>
+</div>
+<div class="section" id="one-good">
+<h2><a class="toc-backref" href="#id17">One Good</a></h2>
+<div class="section" id="id1">
+<h3><a class="toc-backref" href="#id18">Consumer's behaviour</a></h3>
+<ol class="arabic simple">
+<li>If demand is not satisfied and there is some supply left in the market, go to 2., otherwise finish.</li>
+<li>Find the cheapest producer.</li>
+<li>If his or her price is greater than the acceptable price, reduce the demand by half.</li>
+<li>Buy as much as possible, but not greater than the current demand units from this producer. Go to 1.</li>
+</ol>
+</div>
+<div class="section" id="id2">
+<h3><a class="toc-backref" href="#id19">Producer's behaviour</a></h3>
+<p>Producer changes pricing according to the following rules:</p>
+<ol class="arabic simple">
+<li>If the leftover supply is non-zero, and the price of good set by producer is greater than the cost of the good, decrement the price by &quot;price_decrement&quot;.</li>
+<li>If the leftover supply is zero increment the price by multiplying by &quot;price_increment&quot;.</li>
+</ol>
+<p>Producer generates goods according to the following rules:</p>
+<ol class="arabic simple">
+<li>Increase supply of each good up to the number of sold items in the current iteration.</li>
+<li>Find the good with maximum profit and increase its supply by &quot;supply_increment&quot;.</li>
+</ol>
+</div>
+</div>
+<div class="section" id="substitutes">
+<h2><a class="toc-backref" href="#id20">Substitutes</a></h2>
+<div class="section" id="id3">
+<h3><a class="toc-backref" href="#id21">Consumer's behaviour</a></h3>
+<ol class="arabic simple">
+<li>If demand is greater than zero and there is some supply in the market, go to 2, otherwise finish.</li>
+<li>Find the cheapest good and try to satisfy the demand by sequentially buying from the cheapest producer. When demand is satisfied or the supply of the good is finished, go to 1.</li>
+</ol>
+</div>
+<div class="section" id="id4">
+<h3><a class="toc-backref" href="#id22">Producer's behaviour</a></h3>
+<p>The same as in <a class="reference internal" href="#one-good">One Good</a>.</p>
+</div>
+</div>
+
+</section>
+</body>
+</html>

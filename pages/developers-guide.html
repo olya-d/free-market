@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>Developer's Guide</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="/theme/css/main.css" type="text/css" />
+
+        <!--[if IE]>
+                <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+        <!--[if lte IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="/css/ie.css"/>
+                <script src="/js/IE8.js" type="text/javascript"></script><![endif]-->
+
+        <!--[if lt IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="/css/ie6.css"/><![endif]-->
+
+</head>
+
+<body id="index" class="home">
+    <header id="banner" class="body">
+            <h1><a href="">Free Market Simulation </a></h1>
+            </nav>
+    </header><!-- /#banner -->
+        
+<section id="content" class="body">    
+    <h1 class="entry-title">Developer's Guide</h1>
+    <div class="contents topic" id="table-of-contents">
+<p class="topic-title first">Table of contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#overview" id="id21">Overview</a><ul>
+<li><a class="reference internal" href="#simulation-of-consumer" id="id22">Simulation of consumer</a></li>
+<li><a class="reference internal" href="#simulation-of-producer" id="id23">Simulation of producer</a></li>
+<li><a class="reference internal" href="#reading-configuration" id="id24">Reading configuration</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#configuration" id="id25">Configuration</a><ul>
+<li><a class="reference internal" href="#example-of-configuration-for-market-of-one-good" id="id26">Example of configuration for market of one good</a></li>
+<li><a class="reference internal" href="#example-of-configuration-for-market-of-complements" id="id27">Example of configuration for market of complements</a></li>
+<li><a class="reference internal" href="#example-of-configuration-for-market-of-substitutes" id="id28">Example of configuration for market of substitutes</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#base-classes" id="id29">Base classes</a><ul>
+<li><a class="reference internal" href="#multiplegoodsmarket" id="id30"><tt class="docutils literal">MultipleGoodsMarket</tt></a></li>
+<li><a class="reference internal" href="#basesimulationconfig" id="id31"><tt class="docutils literal">BaseSimulationConfig</tt></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#complements" id="id32">Complements</a><ul>
+<li><a class="reference internal" href="#complementsconsumer" id="id33"><tt class="docutils literal">ComplementsConsumer</tt></a></li>
+<li><a class="reference internal" href="#complementsmarket" id="id34"><tt class="docutils literal">ComplementsMarket</tt></a></li>
+<li><a class="reference internal" href="#complementsproducer" id="id35"><tt class="docutils literal">ComplementsProducer</tt></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#onegood" id="id36">OneGood</a><ul>
+<li><a class="reference internal" href="#onegoodconsumer" id="id37"><tt class="docutils literal">OneGoodConsumer</tt></a></li>
+<li><a class="reference internal" href="#id10" id="id38"><tt class="docutils literal">ComplementsMarket</tt></a></li>
+<li><a class="reference internal" href="#onegoodproducer" id="id39"><tt class="docutils literal">OneGoodProducer</tt></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#substitutes" id="id40">Substitutes</a><ul>
+<li><a class="reference internal" href="#substitutesconsumer" id="id41"><tt class="docutils literal">SubstitutesConsumer</tt></a></li>
+<li><a class="reference internal" href="#substitutesmarket" id="id42"><tt class="docutils literal">SubstitutesMarket</tt></a></li>
+<li><a class="reference internal" href="#substitutesproducer" id="id43"><tt class="docutils literal">SubstitutesProducer</tt></a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="overview">
+<h2><a class="toc-backref" href="#id21">Overview</a></h2>
+<p>The program simulates three types of markets: market of one good, market of several substitutes and market of several complements. Simulation of each market is defined through 4 classes: consumer class, market class, producer class and configuration class. For example, market of substitutes is defined through classes <a class="reference internal" href="#substitutesconsumer">SubstitutesConsumer</a>, <a class="reference internal" href="#substitutesmarket">SubstitutesMarket</a>, <a class="reference internal" href="#substitutesproducer">SubstitutesProducer</a> and SubstitutesSimulationConfig.</p>
+<p>The program starts with reading configuration file <tt class="docutils literal">config.json</tt>. From the configuration file it reads the type of the market. Then the instance of this type of market is created and <tt class="docutils literal">simulate</tt> public method is called:</p>
+<div class="highlight"><pre><span class="n">SimulationConfigReader</span> <span class="n">reader</span> <span class="o">=</span> <span class="n">SimulationConfigReader</span><span class="p">();</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">reader</span><span class="p">.</span><span class="n">getSimulationType</span><span class="p">()</span> <span class="o">==</span> <span class="n">BaseSimulationConfig</span><span class="o">::</span><span class="n">SimulationType</span><span class="o">::</span><span class="n">SUBSTITUTES</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">SubstitutesSimulationConfig</span><span class="o">*</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SubstitutesSimulationConfig</span><span class="p">(</span><span class="n">reader</span><span class="p">.</span><span class="n">getPathToConfig</span><span class="p">());</span>
+    <span class="n">SubstitutesMarket</span> <span class="o">*</span><span class="n">market</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SubstitutesMarket</span><span class="p">(</span><span class="n">config</span><span class="p">);</span>
+    <span class="n">market</span><span class="o">-&gt;</span><span class="n">simulate</span><span class="p">(</span><span class="n">config</span><span class="o">-&gt;</span><span class="n">getSimulationDuration</span><span class="p">());</span>
+<span class="p">}</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">reader</span><span class="p">.</span><span class="n">getSimulationType</span><span class="p">()</span> <span class="o">==</span> <span class="n">BaseSimulationConfig</span><span class="o">::</span><span class="n">SimulationType</span><span class="o">::</span><span class="n">ONE_GOOD</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">OneGoodSimulationConfig</span><span class="o">*</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">OneGoodSimulationConfig</span><span class="p">(</span><span class="n">reader</span><span class="p">.</span><span class="n">getPathToConfig</span><span class="p">());</span>
+    <span class="n">OneGoodMarket</span><span class="o">*</span> <span class="n">market</span> <span class="o">=</span> <span class="k">new</span> <span class="n">OneGoodMarket</span><span class="p">(</span><span class="n">config</span><span class="p">);</span>
+    <span class="n">market</span><span class="o">-&gt;</span><span class="n">simulate</span><span class="p">(</span><span class="n">config</span><span class="o">-&gt;</span><span class="n">getSimulationDuration</span><span class="p">());</span>
+<span class="p">}</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">reader</span><span class="p">.</span><span class="n">getSimulationType</span><span class="p">()</span> <span class="o">==</span> <span class="n">BaseSimulationConfig</span><span class="o">::</span><span class="n">SimulationType</span><span class="o">::</span><span class="n">COMPLEMENTS</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">ComplementsSimulationConfig</span><span class="o">*</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ComplementsSimulationConfig</span><span class="p">(</span><span class="n">reader</span><span class="p">.</span><span class="n">getPathToConfig</span><span class="p">());</span>
+    <span class="n">ComplementsMarket</span><span class="o">*</span> <span class="n">market</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ComplementsMarket</span><span class="p">(</span><span class="n">config</span><span class="p">);</span>
+    <span class="n">market</span><span class="o">-&gt;</span><span class="n">simulate</span><span class="p">(</span><span class="n">config</span><span class="o">-&gt;</span><span class="n">getSimulationDuration</span><span class="p">());</span>
+<span class="p">}</span>
+</pre></div>
+<p>The instantiation of the market involves instantiation of consumers, producers and their supplies.</p>
+<p>Each simulation assumes the existence of identical consumers, whose demand changes as a periodic function <span class="formula">(sin<i>i</i> + 2)*20</span>, and consists of three essential steps:</p>
+<ol class="arabic simple">
+<li>Generate demand.</li>
+<li>Consumers buy goods.</li>
+<li>Producers change pricing based on the goods sold.</li>
+<li>Producers produce goods.</li>
+</ol>
+<p>After each step of simulation the current state is output to the files, namely current demand, current prices and current supplies.</p>
+<p>The project consists of three sub-projects:</p>
+<ol class="arabic simple">
+<li><a class="reference internal" href="#complements">Complements</a></li>
+<li><a class="reference internal" href="#onegood">OneGood</a></li>
+<li><a class="reference internal" href="#substitutes">Substitutes</a></li>
+</ol>
+<p>Each sub-project is responsible for simulating one type of market and defines classes that simulates behaviour of consumer, producer and market.</p>
+<div class="section" id="simulation-of-consumer">
+<h3><a class="toc-backref" href="#id22">Simulation of consumer</a></h3>
+<p>Each consumer has a demand, defined in <tt class="docutils literal">demand_</tt> private member, a setter and a getter for this method and a public method <tt class="docutils literal">buy</tt>, which simulates consumer's attempt to satisfy the current demand.
+Also a reference to the market is kept to access the configuration (e.g. maximum acceptable prices for consumers).</p>
+</div>
+<div class="section" id="simulation-of-producer">
+<h3><a class="toc-backref" href="#id23">Simulation of producer</a></h3>
+<p>Each producer has current supplies (<tt class="docutils literal">supplies_</tt> or <tt class="docutils literal">supply</tt> in case of one-good market) and prices (<tt class="docutils literal">prices_</tt> or <tt class="docutils literal">price</tt>). The simulation of producer's behaviour consists of two steps:</p>
+<ol class="arabic simple">
+<li><strong>Change of price</strong> defined in <tt class="docutils literal">changePricing()</tt>. Producer can increase or decrease price based on the number of goods that was sold.</li>
+<li><strong>Production of new supply</strong> defined in <tt class="docutils literal">generateGoods()</tt>. Producer increases supply of the good that currently brings the maximum profit.</li>
+</ol>
+</div>
+<div class="section" id="reading-configuration">
+<h3><a class="toc-backref" href="#id24">Reading configuration</a></h3>
+<p>Each type of market has its own reader of configuration file, inherited from <a class="reference internal" href="#basesimulationconfig">BaseSimulationConfig</a> and contains getters for the supplied parameters (see <a class="reference internal" href="#configuration">Configuration</a>).</p>
+</div>
+</div>
+<div class="section" id="configuration">
+<h2><a class="toc-backref" href="#id25">Configuration</a></h2>
+<p>The program expects configuration in the JSON format, slightly different configuration is required for different type of markets.</p>
+<div class="section" id="example-of-configuration-for-market-of-one-good">
+<h3><a class="toc-backref" href="#id26">Example of configuration for market of one good</a></h3>
+<div class="highlight"><pre><span class="p">{</span>
+<span class="cm">/* Simulation */</span>
+
+<span class="c1">// the number of steps in the simulation</span>
+<span class="s2">&quot;duration&quot;</span><span class="o">:</span> <span class="mi">100</span><span class="p">,</span>
+<span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;one good&quot;</span><span class="p">,</span>
+
+<span class="cm">/* Producers */</span>
+
+<span class="s2">&quot;number_of_producers&quot;</span><span class="o">:</span> <span class="mi">10</span><span class="p">,</span>
+<span class="c1">// Starting supplies will be generated between 0 and &quot;max_starting_supply&quot;</span>
+<span class="s2">&quot;max_starting_supply&quot;</span><span class="o">:</span> <span class="mi">20</span><span class="p">,</span>
+<span class="c1">// When market price is greater than the cost,</span>
+<span class="c1">// supply will be incremented by &quot;supply_incement&quot;</span>
+<span class="s2">&quot;supply_increment&quot;</span><span class="o">:</span> <span class="mi">80</span><span class="p">,</span>
+<span class="c1">// Starting price will be generated between &quot;cost&quot; and &quot;cost&quot; + &quot;max_starting_profit&quot;</span>
+<span class="s2">&quot;max_starting_profit&quot;</span><span class="o">:</span> <span class="mi">5</span><span class="p">,</span>
+<span class="c1">// cost of production of the good</span>
+<span class="s2">&quot;cost&quot;</span><span class="o">:</span> <span class="mi">5</span><span class="p">,</span>
+<span class="c1">// When all supply was sold, the producer will increment the price</span>
+<span class="c1">// by multiplying by &quot;price_increment&quot;</span>
+<span class="s2">&quot;price_increment&quot;</span><span class="o">:</span> <span class="mf">1.1</span><span class="p">,</span>
+<span class="c1">// When some supply is left, the producer will decrement the price</span>
+<span class="c1">// by multiplying by &quot;price_decrement&quot;</span>
+<span class="s2">&quot;price_decrement&quot;</span><span class="o">:</span> <span class="mf">0.9</span><span class="p">,</span>
+
+<span class="cm">/* Consumers */</span>
+
+<span class="c1">// Consumers will stop buying when price is bigger than &quot;max_acceptable_price&quot;</span>
+<span class="s2">&quot;max_acceptable_price&quot;</span><span class="o">:</span> <span class="mi">50</span><span class="p">,</span>
+<span class="s2">&quot;number_of_consumers&quot;</span><span class="o">:</span> <span class="mi">10</span><span class="p">,</span>
+
+<span class="cm">/* Outputs */</span>
+
+<span class="s2">&quot;demand_file&quot;</span><span class="o">:</span> <span class="s2">&quot;~/demand.txt&quot;</span><span class="p">,</span>
+<span class="s2">&quot;supply_file&quot;</span><span class="o">:</span> <span class="s2">&quot;~/supply.csv&quot;</span><span class="p">,</span>
+<span class="s2">&quot;price_file&quot;</span><span class="o">:</span> <span class="s2">&quot;~/price.csv&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="section" id="example-of-configuration-for-market-of-complements">
+<h3><a class="toc-backref" href="#id27">Example of configuration for market of complements</a></h3>
+<div class="highlight"><pre><span class="p">{</span>
+<span class="cm">/* Simulation */</span>
+
+<span class="c1">// the number of steps in the simulation</span>
+<span class="s2">&quot;duration&quot;</span><span class="o">:</span> <span class="mi">1000</span><span class="p">,</span>
+<span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;complements&quot;</span><span class="p">,</span>
+<span class="s2">&quot;goods&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;ski&quot;</span><span class="p">,</span> <span class="s2">&quot;ski boots&quot;</span><span class="p">],</span>
+
+<span class="cm">/* Producers */</span>
+
+<span class="s2">&quot;number_of_producers&quot;</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span>
+<span class="c1">// Starting supplies will be generated between 0 and &quot;max_starting_supply&quot;</span>
+<span class="s2">&quot;max_starting_supply&quot;</span><span class="o">:</span> <span class="mi">20</span><span class="p">,</span>
+<span class="c1">// When market price is greater than the cost,</span>
+<span class="c1">// supply will be incremented by &quot;supply_incement&quot;</span>
+<span class="s2">&quot;supply_increment&quot;</span><span class="o">:</span> <span class="mi">40</span><span class="p">,</span>
+<span class="c1">// Starting price will be generated between &quot;cost&quot; and &quot;cost&quot; + &quot;max_starting_profit&quot;</span>
+<span class="s2">&quot;max_starting_profits&quot;</span><span class="o">:</span> <span class="p">{</span>
+  <span class="s2">&quot;ski&quot;</span><span class="o">:</span> <span class="mi">15</span><span class="p">,</span>
+  <span class="s2">&quot;ski boots&quot;</span><span class="o">:</span> <span class="mi">15</span>
+<span class="p">},</span>
+<span class="c1">// Cost of production of the good</span>
+<span class="s2">&quot;costs&quot;</span><span class="o">:</span> <span class="p">{</span>
+  <span class="s2">&quot;ski&quot;</span><span class="o">:</span> <span class="mi">200</span><span class="p">,</span>
+  <span class="s2">&quot;ski boots&quot;</span><span class="o">:</span> <span class="mi">120</span>
+<span class="p">},</span>
+<span class="c1">// When all supply was sold, the producer will increment the price</span>
+<span class="c1">// by multiplying by &quot;price_increment&quot;</span>
+<span class="s2">&quot;price_increment&quot;</span><span class="o">:</span> <span class="mf">1.1</span><span class="p">,</span>
+<span class="c1">// When some supply is left, the producer will decrement the price</span>
+<span class="c1">// by multiplying by &quot;price_decrement&quot;</span>
+<span class="s2">&quot;price_decrement&quot;</span><span class="o">:</span> <span class="mf">0.9</span><span class="p">,</span>
+
+<span class="cm">/* Consumers */</span>
+
+<span class="c1">// Consumers will stop buying when price is bigger than &quot;max_acceptable_price&quot;</span>
+<span class="s2">&quot;max_acceptable_prices&quot;</span><span class="o">:</span> <span class="p">{</span>
+  <span class="s2">&quot;ski&quot;</span><span class="o">:</span> <span class="mi">600</span><span class="p">,</span>
+  <span class="s2">&quot;ski boots&quot;</span><span class="o">:</span> <span class="mi">400</span>
+<span class="p">},</span>
+<span class="c1">// How many items of each good consumers buy together</span>
+<span class="s2">&quot;ratios&quot;</span><span class="o">:</span> <span class="p">{</span>
+  <span class="s2">&quot;ski&quot;</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="s2">&quot;ski boots&quot;</span><span class="o">:</span> <span class="mi">2</span>
+<span class="p">},</span>
+<span class="s2">&quot;number_of_consumers&quot;</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span>
+
+<span class="cm">/* Outputs */</span>
+
+<span class="s2">&quot;demand_file&quot;</span><span class="o">:</span> <span class="s2">&quot;~/demand.txt&quot;</span><span class="p">,</span>
+<span class="s2">&quot;supply_file&quot;</span><span class="o">:</span> <span class="s2">&quot;~/supply.csv&quot;</span><span class="p">,</span>
+<span class="s2">&quot;price_file&quot;</span><span class="o">:</span> <span class="s2">&quot;~/price.csv&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="section" id="example-of-configuration-for-market-of-substitutes">
+<h3><a class="toc-backref" href="#id28">Example of configuration for market of substitutes</a></h3>
+<div class="highlight"><pre><span class="p">{</span>
+<span class="cm">/* Simulation */</span>
+
+<span class="c1">// the number of steps in the simulation</span>
+<span class="s2">&quot;duration&quot;</span><span class="o">:</span> <span class="mi">1000</span><span class="p">,</span>
+<span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;substitutes&quot;</span><span class="p">,</span>
+<span class="s2">&quot;goods&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;ski&quot;</span><span class="p">,</span> <span class="s2">&quot;ski boots&quot;</span><span class="p">],</span>
+
+<span class="cm">/* Producers */</span>
+
+<span class="s2">&quot;number_of_producers&quot;</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span>
+<span class="c1">// Starting supplies will be generated between 0 and &quot;max_starting_supply&quot;</span>
+<span class="s2">&quot;max_starting_supply&quot;</span><span class="o">:</span> <span class="mi">20</span><span class="p">,</span>
+<span class="c1">// When market price is greater than the cost,</span>
+<span class="c1">// supply will be incremented by &quot;supply_incement&quot;</span>
+<span class="s2">&quot;supply_increment&quot;</span><span class="o">:</span> <span class="mi">40</span><span class="p">,</span>
+<span class="c1">// Starting price will be generated between &quot;cost&quot; and &quot;cost&quot; + &quot;max_starting_profit&quot;</span>
+<span class="s2">&quot;max_starting_profits&quot;</span><span class="o">:</span> <span class="p">{</span>
+  <span class="s2">&quot;ski&quot;</span><span class="o">:</span> <span class="mi">15</span><span class="p">,</span>
+  <span class="s2">&quot;ski boots&quot;</span><span class="o">:</span> <span class="mi">15</span>
+<span class="p">},</span>
+<span class="c1">// Cost of production of the good</span>
+<span class="s2">&quot;costs&quot;</span><span class="o">:</span> <span class="p">{</span>
+  <span class="s2">&quot;ski&quot;</span><span class="o">:</span> <span class="mi">200</span><span class="p">,</span>
+  <span class="s2">&quot;ski boots&quot;</span><span class="o">:</span> <span class="mi">120</span>
+<span class="p">},</span>
+<span class="c1">// When all supply was sold, the producer will increment the price</span>
+<span class="c1">// by multiplying by &quot;price_increment&quot;</span>
+<span class="s2">&quot;price_increment&quot;</span><span class="o">:</span> <span class="mf">1.1</span><span class="p">,</span>
+<span class="c1">// When some supply is left, the producer will decrement the price</span>
+<span class="c1">// by multiplying by &quot;price_decrement&quot;</span>
+<span class="s2">&quot;price_decrement&quot;</span><span class="o">:</span> <span class="mf">0.9</span><span class="p">,</span>
+
+<span class="cm">/* Consumers */</span>
+
+<span class="c1">// Consumers will stop buying when price is bigger than &quot;max_acceptable_price&quot;</span>
+<span class="s2">&quot;max_acceptable_prices&quot;</span><span class="o">:</span> <span class="p">{</span>
+  <span class="s2">&quot;ski&quot;</span><span class="o">:</span> <span class="mi">600</span><span class="p">,</span>
+  <span class="s2">&quot;ski boots&quot;</span><span class="o">:</span> <span class="mi">400</span>
+<span class="p">},</span>
+<span class="s2">&quot;number_of_consumers&quot;</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span>
+
+<span class="cm">/* Outputs */</span>
+
+<span class="s2">&quot;demand_file&quot;</span><span class="o">:</span> <span class="s2">&quot;~/demand.txt&quot;</span><span class="p">,</span>
+<span class="s2">&quot;supply_file&quot;</span><span class="o">:</span> <span class="s2">&quot;~/supply.csv&quot;</span><span class="p">,</span>
+<span class="s2">&quot;price_file&quot;</span><span class="o">:</span> <span class="s2">&quot;~/price.csv&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="base-classes">
+<h2><a class="toc-backref" href="#id29">Base classes</a></h2>
+<p>The program makes use of two base classes.</p>
+<div class="section" id="multiplegoodsmarket">
+<h3><a class="toc-backref" href="#id30"><tt class="docutils literal">MultipleGoodsMarket</tt></a></h3>
+<p>This template class is used for markets that have multiple goods (substitutes and complements). It is useful, because such operations as finding the cheapest producer can be defined independently of the type of the market.</p>
+<div class="section" id="definition">
+<h4>Definition</h4>
+<div class="highlight"><pre><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">Config</span><span class="p">,</span> <span class="k">class</span> <span class="nc">Producer</span><span class="p">,</span> <span class="k">class</span> <span class="nc">Consumer</span><span class="o">&gt;</span>
+      <span class="k">class</span> <span class="nc">MultipleGoodsMarket</span>
+</pre></div>
+</div>
+<div class="section" id="protected-memebers">
+<h4>Protected memebers</h4>
+<div class="highlight"><pre><span class="n">Config</span><span class="o">*</span> <span class="n">config_</span>
+</pre></div>
+<div class="highlight"><pre><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Producer</span><span class="o">*&gt;</span> <span class="n">producers_</span>
+</pre></div>
+<div class="highlight"><pre><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Consumer</span><span class="o">*&gt;</span> <span class="n">consumers_</span>
+</pre></div>
+<div class="highlight"><pre><span class="n">std</span><span class="o">::</span><span class="n">ofstream</span> <span class="n">demandFile_</span>
+</pre></div>
+<div class="highlight"><pre><span class="n">std</span><span class="o">::</span><span class="n">ofstream</span> <span class="n">priceFile_</span>
+</pre></div>
+<div class="highlight"><pre><span class="n">std</span><span class="o">::</span><span class="n">ofstream</span> <span class="n">supplyFile_</span>
+</pre></div>
+<div class="highlight"><pre><span class="c1">// Output the current state of the market (supplies, prices and demand)</span>
+<span class="c1">// to the standard output and the files (demandFile_, priceFile_, supplyFile_).</span>
+<span class="k">virtual</span> <span class="kt">void</span> <span class="n">_writeData</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span class="c1">// Set up the market</span>
+<span class="c1">// (initialize vectors producers_ and customers_, open files and write headers).</span>
+<span class="k">virtual</span> <span class="kt">void</span> <span class="n">_setUp</span><span class="p">(</span><span class="n">Config</span><span class="o">*</span> <span class="n">config</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="public-memebers">
+<h4>Public memebers</h4>
+<div class="highlight"><pre><span class="c1">// Simulation is left to be implemented in each subclass.</span>
+<span class="k">virtual</span> <span class="kt">void</span> <span class="n">simulate</span><span class="p">(</span><span class="kt">int</span> <span class="n">times</span><span class="p">)</span>
+</pre></div>
+<div class="highlight"><pre><span class="k">virtual</span> <span class="kt">int</span> <span class="n">getSupplyOf</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">good</span><span class="p">)</span>
+</pre></div>
+<div class="highlight"><pre><span class="k">virtual</span> <span class="kt">int</span> <span class="n">getTotalDemand</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span class="c1">// Total supply can be defined in different units, so implementation is left out.</span>
+<span class="k">virtual</span> <span class="kt">int</span> <span class="n">getTotalSupply</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span class="c1">// If ignoreZeroSupply is true, producers are sorted so that</span>
+<span class="c1">// producers with zero supply are in the end.</span>
+<span class="n">Producer</span><span class="o">*</span> <span class="n">getCheapestProducerOf</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="o">&amp;</span><span class="n">good</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">ignoreZeroSupply</span><span class="p">)</span>
+</pre></div>
+<div class="highlight"><pre><span class="k">virtual</span> <span class="kt">float</span> <span class="n">getAveragePriceOf</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="o">&amp;</span><span class="n">good</span><span class="p">)</span>
+</pre></div>
+<div class="highlight"><pre><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span> <span class="k">const</span> <span class="o">&amp;</span> <span class="n">getGoods</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="k">const</span> <span class="o">&amp;</span> <span class="n">getMaxAcceptablePrices</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="k">const</span> <span class="o">&amp;</span> <span class="n">getCosts</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span class="kt">int</span> <span class="n">getSupplyIncrement</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span class="kt">float</span> <span class="n">getPriceIncrement</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span class="kt">float</span> <span class="n">getPriceDecrement</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="basesimulationconfig">
+<h3><a class="toc-backref" href="#id31"><tt class="docutils literal">BaseSimulationConfig</tt></a></h3>
+<p>Base class for reading simulation of different types of market.</p>
+<div class="section" id="private-members">
+<h4>Private members</h4>
+<div class="highlight"><pre><span class="kt">int</span> <span class="n">simulation_duration</span>
+</pre></div>
+<div class="highlight"><pre><span class="kt">int</span> <span class="n">num_of_producers</span>
+</pre></div>
+<div class="highlight"><pre><span class="kt">int</span> <span class="n">num_of_consumers</span>
+</pre></div>
+<div class="highlight"><pre><span class="kt">int</span> <span class="n">max_starting_supply</span>
+</pre></div>
+<div class="highlight"><pre><span class="kt">int</span> <span class="n">supply_increment</span>
+</pre></div>
+<div class="highlight"><pre><span class="kt">float</span> <span class="n">price_increment</span>
+</pre></div>
+<div class="highlight"><pre><span class="kt">float</span> <span class="n">price_decrement</span>
+</pre></div>
+<div class="highlight"><pre><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">demand_file</span>
+</pre></div>
+<div class="highlight"><pre><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">supply_file</span>
+</pre></div>
+<div class="highlight"><pre><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">price_file</span>
+</pre></div>
+<div class="highlight"><pre><span class="c1">// Read configuration located on the path.</span>
+<span class="k">virtual</span> <span class="kt">void</span> <span class="n">readConfig</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">path</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="id1">
+<h4>Protected memebers</h4>
+<div class="highlight"><pre><span class="c1">// Read configuration common to all types of market.</span>
+<span class="kt">void</span> <span class="nf">readCommonConfig</span><span class="p">(</span><span class="n">Json</span><span class="o">::</span><span class="n">Value</span> <span class="n">root</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="section" id="id2">
+<h4>Public memebers</h4>
+<div class="highlight"><pre><span class="k">enum</span> <span class="n">SimulationType</span> <span class="p">{</span><span class="n">ONE_GOOD</span><span class="p">,</span> <span class="n">SUBSTITUTES</span><span class="p">,</span> <span class="n">COMPLEMENTS</span><span class="p">};</span>
+</pre></div>
+<div class="highlight"><pre><span class="kt">int</span> <span class="n">getSimulationDuration</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span class="kt">int</span> <span class="n">getNumOfProducers</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span class="kt">int</span> <span class="n">getNumOfConsumers</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span class="kt">int</span> <span class="n">getMaxStartingSupply</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span class="kt">int</span> <span class="n">getSupplyIncrement</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span class="kt">float</span> <span class="n">getPriceIncrement</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span class="kt">float</span> <span class="n">getPriceDecrement</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="o">&amp;</span><span class="n">getDemandFile</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="o">&amp;</span><span class="n">getSupplyFile</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="o">&amp;</span><span class="n">getPriceFile</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="complements">
+<h2><a class="toc-backref" href="#id32">Complements</a></h2>
+<div class="section" id="complementsconsumer">
+<h3><a class="toc-backref" href="#id33"><tt class="docutils literal">ComplementsConsumer</tt></a></h3>
+<p>Simulates the behaviour of the consumer in the market of perfect complementary goods in the following manner:</p>
+<p>For each good consumer tries to satisfy his or her <tt class="docutils literal">demand_</tt> by sequentially selecting the cheapest producer, and then buying the maximum amount keeping the ratio of complementary goods. Say there is good1 and good2 and the ratios are 1 and 2. If the customer can buy 10 units of good1 and 15 units of good2,
+he or she will buy 7 units of good1 and 14 units of good2.</p>
+<div class="section" id="id3">
+<h4>Private members</h4>
+<div class="highlight"><pre><span class="n">ComplementsMarket</span><span class="o">*</span> <span class="n">market_</span>
+</pre></div>
+<div class="highlight"><pre><span class="c1">// Demand of the consumer - number of &quot;total goods&quot; the consumer wants to buy.</span>
+<span class="c1">// For example, if the ratios are 2 and 3, and `demand_` equals to 4,</span>
+<span class="c1">// then the consumer wants to buy 8 units of the first good and 12 units of the second good.</span>
+<span class="kt">int</span> <span class="n">demand_</span>
+</pre></div>
+<div class="highlight"><pre><span class="c1">// Buy as much as possible from the producer, but not exceeding currentDemand,</span>
+<span class="c1">// decreasing the supply of producer. Returns the number of units of the good bought.</span>
+<span class="kt">int</span> <span class="n">buyFromProducer</span><span class="p">(</span><span class="n">ComplementsProducer</span><span class="o">&amp;</span> <span class="n">producer</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">good</span><span class="p">,</span> <span class="kt">int</span> <span class="n">currentDemand</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="public-members">
+<h4>Public members</h4>
+<div class="highlight"><pre><span class="kt">void</span> <span class="n">buy</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span class="kt">int</span> <span class="n">getDemand</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span class="kt">void</span> <span class="n">setDemand</span><span class="p">(</span><span class="kt">int</span> <span class="n">d</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="complementsmarket">
+<h3><a class="toc-backref" href="#id34"><tt class="docutils literal">ComplementsMarket</tt></a></h3>
+<p>Simulation of the market of perfect complements.</p>
+<div class="section" id="id4">
+<h4>Definition</h4>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">ComplementsMarket</span> <span class="o">:</span>
+    <span class="k">public</span> <span class="n">MultipleGoodsMarket</span><span class="o">&lt;</span><span class="n">ComplementsSimulationConfig</span><span class="p">,</span> <span class="n">ComplementsProducer</span><span class="p">,</span> <span class="n">ComplementsConsumer</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<div class="section" id="id5">
+<h4>Public members</h4>
+<div class="highlight"><pre><span class="kt">void</span> <span class="n">simulate</span><span class="p">(</span><span class="kt">int</span> <span class="n">times</span><span class="p">)</span>
+</pre></div>
+<div class="highlight"><pre><span class="c1">// Returns total supply as the number of &quot;total goods&quot;</span>
+<span class="c1">// (the maximum value among total supply of the good divided by the ratio of the good for each good).</span>
+<span class="kt">int</span> <span class="n">getTotalSupply</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span class="c1">// Returns the maximum price among the producers for the good.</span>
+<span class="kt">float</span> <span class="n">getMaxPriceOf</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="o">&amp;</span><span class="n">good</span><span class="p">)</span>
+</pre></div>
+<div class="highlight"><pre><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">ComplementsProducer</span><span class="o">*&gt;</span> <span class="o">&amp;</span><span class="n">getProducers</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="k">const</span> <span class="o">&amp;</span><span class="n">getRatios</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="complementsproducer">
+<h3><a class="toc-backref" href="#id35"><tt class="docutils literal">ComplementsProducer</tt></a></h3>
+<div class="section" id="id6">
+<h4>Private members</h4>
+<div class="highlight"><pre><span class="c1">// Used to access configuration of the market (e.g. maximum acceptable prices for consumers)</span>
+<span class="n">ComplementsMarket</span><span class="o">*</span> <span class="n">market_</span>
+</pre></div>
+<div class="highlight"><pre><span class="c1">// The number of items sold in the current iteration for each good.</span>
+<span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">lastSold_</span>
+</pre></div>
+<div class="highlight"><pre><span class="c1">// The number of items available for sell for each good.</span>
+<span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">supplies_</span>
+</pre></div>
+<div class="highlight"><pre><span class="c1">// Current prices.</span>
+<span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span> <span class="kt">float</span><span class="o">&gt;</span> <span class="n">prices_</span>
+</pre></div>
+</div>
+<div class="section" id="id7">
+<h4>Public members</h4>
+<div class="highlight"><pre><span class="c1">// Sell q items of the good (decrease supplies_[good], increase lastSold_[good] by q)</span>
+<span class="kt">void</span> <span class="n">sell</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="o">&amp;</span><span class="n">good</span><span class="p">,</span> <span class="kt">int</span> <span class="n">q</span><span class="p">)</span>
+</pre></div>
+<div class="highlight"><pre><span class="c1">// Producer changes pricing according to the following rules:</span>
+<span class="c1">// 1. If the leftover supply is non-zero, and the price of good set by producer</span>
+<span class="c1">// is greater than the cost of the good, decrement the price by multiplying by market.price_decrement.</span>
+<span class="c1">// 2. If the leftover supply is zero, and the number of goods that was sold</span>
+<span class="c1">// is non-zero, increment the price by multiplying by market.price_increment.</span>
+<span class="kt">void</span> <span class="n">changePricing</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span class="c1">// Producer generates goods according to the following rules:</span>
+<span class="c1">// 1. Increase supply of each good up to the number of sold items in the current iteration.</span>
+<span class="c1">// 2. Find the good with maximum profit (= average price - cost) and increase its supply by market.supply_increment.</span>
+<span class="kt">void</span> <span class="n">generateGoods</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span class="c1">// Ask if this producer has sold any number of the good in the current iteration.</span>
+<span class="kt">bool</span> <span class="n">hasSoldGood</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">good</span><span class="p">)</span>
+</pre></div>
+<div class="highlight"><pre><span class="c1">// Prepare the producer to the next iteration (set lastSold_ to 0).</span>
+<span class="kt">void</span> <span class="n">prepare</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span class="kt">void</span> <span class="n">setSupply</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">good</span><span class="p">,</span> <span class="kt">int</span> <span class="n">s</span><span class="p">)</span>
+</pre></div>
+<div class="highlight"><pre><span class="kt">void</span> <span class="n">setPrice</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">good</span><span class="p">,</span> <span class="kt">float</span> <span class="n">p</span><span class="p">)</span>
+</pre></div>
+<div class="highlight"><pre><span class="kt">int</span> <span class="n">getSupply</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">good</span><span class="p">)</span>
+</pre></div>
+<div class="highlight"><pre><span class="kt">float</span> <span class="n">getPrice</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">good</span><span class="p">)</span>
+</pre></div>
+<!-- ``ComplementsSimulationConfig`` -->
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<!-- Definition -->
+<!-- ++++++++++++++++ -->
+<!-- .. code-block:: c++ -->
+<!-- class ComplementsSimulationConfig : public BaseSimulationConfig -->
+<!-- Private members -->
+<!-- ++++++++++++++++ -->
+<!-- .. code-block:: c++ -->
+<!-- std::vector<std::string> goods_ -->
+<!-- .. code-block:: c++ -->
+<!-- std::map<std::string, int> max_starting_profits_ -->
+<!-- .. code-block:: c++ -->
+<!-- std::map<std::string, int> max_acceptable_prices_ -->
+<!-- .. code-block:: c++ -->
+<!-- std::map<std::string, int> costs_ -->
+<!-- .. code-block:: c++ -->
+<!-- std::map<std::string, int> ratios_ -->
+<!-- .. code-block:: c++ -->
+<!-- void readConfig(std::string path) -->
+<!-- Public members -->
+<!-- ++++++++++++++++ -->
+<!-- .. code-block:: c++ -->
+<!-- std::vector<std::string> const &getGoods() -->
+<!-- .. code-block:: c++ -->
+<!-- std::map<std::string, int> const &getMaxStartingProfits() -->
+<!-- .. code-block:: c++ -->
+<!-- std::map<std::string, int> const &getMaxAcceptablePrices() -->
+<!-- .. code-block:: c++ -->
+<!-- std::map<std::string, int> const &getCosts() -->
+<!-- .. code-block:: c++ -->
+<!-- std::map<std::string, int> const &getRatios() -->
+</div>
+</div>
+</div>
+<div class="section" id="onegood">
+<h2><a class="toc-backref" href="#id36">OneGood</a></h2>
+<div class="section" id="onegoodconsumer">
+<h3><a class="toc-backref" href="#id37"><tt class="docutils literal">OneGoodConsumer</tt></a></h3>
+<p>Simulates the behaviour of consumer when there is only one good in the market in the following manner:</p>
+<ol class="arabic simple">
+<li>If <tt class="docutils literal">demand_</tt> is not satisfied and there is some supply left in the market, go to 2., otherwise finish.</li>
+<li>Find the cheapest producer.</li>
+<li>If his or her price is greater than the acceptable price, reduce the <tt class="docutils literal">demand_</tt> by half.</li>
+<li>Buy as much as possible, but not greater than the current <tt class="docutils literal">demand_</tt> units from this producer. Go to 1.</li>
+</ol>
+<div class="section" id="id8">
+<h4>Private members</h4>
+<div class="highlight"><pre><span class="n">OneGoodMarket</span><span class="o">*</span> <span class="n">market_</span>
+</pre></div>
+<div class="highlight"><pre><span class="kt">int</span> <span class="n">demand_</span>
+</pre></div>
+</div>
+<div class="section" id="id9">
+<h4>Public members</h4>
+<div class="highlight"><pre><span class="kt">void</span> <span class="n">buy</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">OneGoodProducer</span> <span class="o">*&gt;</span> <span class="n">producers</span><span class="p">)</span>
+</pre></div>
+<div class="highlight"><pre><span class="kt">int</span> <span class="n">getDemand</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span class="kt">void</span> <span class="n">setDemand</span><span class="p">(</span><span class="kt">int</span> <span class="n">d</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id10">
+<h3><a class="toc-backref" href="#id38"><tt class="docutils literal">ComplementsMarket</tt></a></h3>
+<p>Simulation of the market of perfect complements.</p>
+<div class="section" id="id11">
+<h4>Private members</h4>
+<div class="highlight"><pre><span class="n">OneGoodSimulationConfig</span><span class="o">*</span> <span class="n">_config</span>
+</pre></div>
+<div class="highlight"><pre><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">OneGoodProducer</span> <span class="o">*&gt;</span> <span class="n">producers</span>
+</pre></div>
+<div class="highlight"><pre><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">OneGoodConsumer</span> <span class="o">*&gt;</span> <span class="n">consumers</span>
+</pre></div>
+<div class="highlight"><pre><span class="n">std</span><span class="o">::</span><span class="n">ofstream</span> <span class="n">demandData</span>
+</pre></div>
+<div class="highlight"><pre><span class="n">std</span><span class="o">::</span><span class="n">ofstream</span> <span class="n">priceData</span>
+</pre></div>
+<div class="highlight"><pre><span class="n">std</span><span class="o">::</span><span class="n">ofstream</span> <span class="n">supplyData</span>
+</pre></div>
+<div class="highlight"><pre><span class="kt">void</span> <span class="n">writeData</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="section" id="id12">
+<h4>Public members</h4>
+<div class="highlight"><pre><span class="kt">void</span> <span class="n">simulate</span><span class="p">(</span><span class="kt">int</span> <span class="n">times</span><span class="p">)</span>
+</pre></div>
+<div class="highlight"><pre><span class="kt">float</span> <span class="n">averagePrice</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span class="kt">int</span> <span class="n">supply</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span class="kt">int</span> <span class="n">demand</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span class="kt">int</span> <span class="n">getMaxStartingProfit</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span class="kt">int</span> <span class="n">getCost</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span class="kt">int</span> <span class="n">getMaxAcceptablePrice</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span class="kt">int</span> <span class="n">getSupplyIncrement</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span class="kt">float</span> <span class="n">getPriceIncrement</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span class="kt">float</span> <span class="n">getPriceDecrement</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="onegoodproducer">
+<h3><a class="toc-backref" href="#id39"><tt class="docutils literal">OneGoodProducer</tt></a></h3>
+<div class="section" id="id13">
+<h4>Private members</h4>
+<div class="highlight"><pre><span class="n">OneGoodMarket</span><span class="o">*</span> <span class="n">market_</span>
+</pre></div>
+<div class="highlight"><pre><span class="kt">int</span> <span class="n">supply</span>
+</pre></div>
+<div class="highlight"><pre><span class="kt">float</span> <span class="n">price</span>
+</pre></div>
+<div class="highlight"><pre><span class="kt">void</span> <span class="n">generateGoods</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="section" id="id14">
+<h4>Public members</h4>
+<div class="highlight"><pre><span class="kt">int</span> <span class="n">getSupply</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span class="kt">float</span> <span class="n">getPrice</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span class="kt">void</span> <span class="n">setSupply</span><span class="p">(</span><span class="kt">int</span> <span class="n">s</span><span class="p">)</span>
+</pre></div>
+<div class="highlight"><pre><span class="kt">void</span> <span class="n">setPrice</span><span class="p">(</span><span class="kt">float</span> <span class="n">p</span><span class="p">)</span>
+</pre></div>
+<div class="highlight"><pre><span class="kt">void</span> <span class="n">produce</span><span class="p">()</span>
+</pre></div>
+<!-- ``OneGoodSimulationConfig`` -->
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<!-- Definition -->
+<!-- ++++++++++++++++ -->
+<!-- .. code-block:: c++ -->
+<!-- class OneGoodSimulationConfig : public BaseSimulationConfig -->
+<!-- Private members -->
+<!-- ++++++++++++++++ -->
+<!-- .. code-block:: c++ -->
+<!-- int max_starting_profit -->
+<!-- .. code-block:: c++ -->
+<!-- int cost -->
+<!-- .. code-block:: c++ -->
+<!-- int max_acceptable_price -->
+<!-- .. code-block:: c++ -->
+<!-- void readConfig(std::string path) -->
+<!-- Public members -->
+<!-- ++++++++++++++++ -->
+<!-- .. code-block:: c++ -->
+<!-- int getMaxStartingProfit() -->
+<!-- .. code-block:: c++ -->
+<!-- int getCost() -->
+<!-- .. code-block:: c++ -->
+<!-- int getMaxAcceptablePrice() -->
+</div>
+</div>
+</div>
+<div class="section" id="substitutes">
+<h2><a class="toc-backref" href="#id40">Substitutes</a></h2>
+<div class="section" id="substitutesconsumer">
+<h3><a class="toc-backref" href="#id41"><tt class="docutils literal">SubstitutesConsumer</tt></a></h3>
+<p>Simulates behaviour of the consumer in the market of substitutes in the following manner:</p>
+<ol class="arabic simple">
+<li>If demand is greater than zero and there is some supply in the market, go to 2, otherwise finish.</li>
+<li>Find the cheapest good and try to satisfy the demand by sequentially buying from the cheapest producer. When demand is satisfied or the supply of the good is finished, go to 1.</li>
+</ol>
+<div class="section" id="id15">
+<h4>Private members</h4>
+<div class="highlight"><pre><span class="n">SubstitutesMarket</span><span class="o">*</span> <span class="n">market_</span>
+</pre></div>
+<div class="highlight"><pre><span class="kt">int</span> <span class="n">demand_</span>
+</pre></div>
+</div>
+<div class="section" id="id16">
+<h4>Public members</h4>
+<div class="highlight"><pre><span class="kt">void</span> <span class="n">buy</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span class="kt">int</span> <span class="n">getDemand</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span class="kt">void</span> <span class="n">setDemand</span><span class="p">(</span><span class="kt">int</span> <span class="n">d</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="substitutesmarket">
+<h3><a class="toc-backref" href="#id42"><tt class="docutils literal">SubstitutesMarket</tt></a></h3>
+<p>Simulates the market of substitutes.</p>
+<div class="section" id="id17">
+<h4>Definition</h4>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">SubstitutesMarket</span> <span class="o">:</span>
+    <span class="k">public</span> <span class="n">MultipleGoodsMarket</span><span class="o">&lt;</span><span class="n">SubstitutesSimulationConfig</span><span class="p">,</span> <span class="n">SubstitutesProducer</span><span class="p">,</span> <span class="n">SubstitutesConsumer</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<div class="section" id="id18">
+<h4>Public members</h4>
+<div class="highlight"><pre><span class="kt">void</span> <span class="n">simulate</span><span class="p">(</span><span class="kt">int</span> <span class="n">times</span><span class="p">)</span>
+</pre></div>
+<div class="highlight"><pre><span class="kt">int</span> <span class="n">getTotalSupply</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span class="c1">// Returns the cheapest good with non-zero supply</span>
+<span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">cheapestGood</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="substitutesproducer">
+<h3><a class="toc-backref" href="#id43"><tt class="docutils literal">SubstitutesProducer</tt></a></h3>
+<div class="section" id="id19">
+<h4>Private members</h4>
+<div class="highlight"><pre><span class="c1">// Used to access configuration and the current state of the market (e.g. current average prices).</span>
+<span class="n">SubstitutesMarket</span><span class="o">*</span> <span class="n">market_</span>
+</pre></div>
+<div class="highlight"><pre><span class="c1">// The number of items available for sell for each good.</span>
+<span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">supplies_</span>
+</pre></div>
+<div class="highlight"><pre><span class="c1">// Current prices.</span>
+<span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span> <span class="kt">float</span><span class="o">&gt;</span> <span class="n">prices_</span>
+</pre></div>
+</div>
+<div class="section" id="id20">
+<h4>Public members</h4>
+<div class="highlight"><pre><span class="c1">// Producer changes pricing according to the following rule: if the leftover supply is non-zero,</span>
+<span class="c1">// and the price of good set by producer is greater than the cost of the good,</span>
+<span class="c1">// decrement the price by multiplying by market.price_decrement,</span>
+<span class="c1">// otherwise increment the price by multiplying by market.price_increment.</span>
+<span class="kt">void</span> <span class="n">changePricing</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span class="c1">// Producer generates goods according to the following rule:</span>
+<span class="c1">// find the good with maximum profit (= average price - cost)</span>
+<span class="c1">// and increase its supply by market.supply_increment.</span>
+<span class="c1">// This method should be called after changePricing().</span>
+<span class="kt">void</span> <span class="n">generateGoods</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span class="kt">void</span> <span class="n">setSupply</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">good</span><span class="p">,</span> <span class="kt">int</span> <span class="n">s</span><span class="p">)</span>
+</pre></div>
+<div class="highlight"><pre><span class="kt">void</span> <span class="n">setPrice</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">good</span><span class="p">,</span> <span class="kt">float</span> <span class="n">p</span><span class="p">)</span>
+</pre></div>
+<div class="highlight"><pre><span class="kt">int</span> <span class="n">getSupply</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">good</span><span class="p">)</span>
+</pre></div>
+<div class="highlight"><pre><span class="kt">float</span> <span class="n">getPrice</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">good</span><span class="p">)</span>
+</pre></div>
+<!-- ``SubstitutesSimulationConfig`` -->
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<!-- Definition -->
+<!-- ++++++++++++++++ -->
+<!-- .. code-block:: c++ -->
+<!-- class SubstitutesSimulationConfig : public BaseSimulationConfig -->
+<!-- Private members -->
+<!-- ++++++++++++++++ -->
+<!-- .. code-block:: c++ -->
+<!-- std::vector<std::string> goods_ -->
+<!-- .. code-block:: c++ -->
+<!-- std::map<std::string, int> max_starting_profits -->
+<!-- .. code-block:: c++ -->
+<!-- std::map<std::string, int> max_acceptable_prices -->
+<!-- .. code-block:: c++ -->
+<!-- std::map<std::string, int> costs -->
+<!-- .. code-block:: c++ -->
+<!-- void argumentMissingExit(std::string name) -->
+<!-- .. code-block:: c++ -->
+<!-- void readConfig(std::string path) -->
+<!-- Public members -->
+<!-- ++++++++++++++++ -->
+<!-- .. code-block:: c++ -->
+<!-- std::vector<std::string> const &getGoods() -->
+<!-- .. code-block:: c++ -->
+<!-- std::map<std::string, int> const &getMaxStartingProfits() -->
+<!-- .. code-block:: c++ -->
+<!-- std::map<std::string, int> const &getMaxAcceptablePrices() -->
+<!-- .. code-block:: c++ -->
+<!-- std::map<std::string, int> const &getCosts() -->
+</div>
+</div>
+</div>
+
+</section>
+</body>
+</html>
